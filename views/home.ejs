@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="home.js" defer></script>
+</head>
+
+<body>
+    <h1>Do It Yourself Calender</h1>
+    <p>You can choose between a pre-defined length of calender. Or you can choose to create your own</p>
+    <div class="radioButtons">
+        <input id="pre" type="radio" value="Pre-defined" name="calender" checked onchange="change(this)">
+        <label for="pre">Pre-defined</label><br>
+        <input id="cus" type="radio" value="Custom" name="calender" onchange="change(this)">
+        <label for="cus">Custom</label><br>
+    </div>
+    <div class="result">
+        <form action="/create" method="post">
+            <div class="pred">
+                <label for="sizes">Choose a desired amount of days:</label>
+                <select id="sizes" name="sizes">
+                    <option value="7 Days">7 Days</option>
+                    <option value="14 Days">14 Days</option>
+                    <option value="30 Days">30 Days</option>
+                    <option value="90 Days">90 Days</option>
+                </select>
+                <br>
+            </div>
+            <div class="cus" style="display: none;">
+                <label>Title:
+                    <input type="text" name="cusTitle">
+                </label> <br>
+                <label>Description:
+                    <input type="text" name="cusDescription">
+                </label><br>
+                <label> Days:
+                    <input type="number" min="1" max="99999" name="days">
+                </label>
+                <br>
+            </div>
+            <input type="hidden" value="" name="value">
+            <br><br>
+            <button type="submit">Submit</button>
+        </form>
+
+    </div>
+
+</body>
+
+</html>

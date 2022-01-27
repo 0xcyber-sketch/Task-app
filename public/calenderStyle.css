@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+  }
+  
+
+  table, td, th {
+    border: 1px solid black;
+    width: calc(100% / 7);
+   
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  td {
+    text-align: center;
+  }
+  .box_con {
+    position: relative;
+  }
+
+  .box_con p {
+    position: static;
+  }
+
+  .box_con img {
+    z-index: 1;
+    width: 80%;
+    height:100%;
+    position: absolute;
+    opacity: 0.8;
+    text-align: center;
+    padding-left: 20%;
+    
+  }
+

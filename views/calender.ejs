@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calender</title>
+    <link rel="stylesheet" href="calenderStyle.css">
+    <script src="calender.js" defer></script>
+    
+</head>
+
+<body>
+    <h1>
+        <%= title %>
+    </h1>
+    <p>
+        <%= description %>
+    </p>
+    <br>
+    <table>
+        <% let count = 1%>
+        <% if (days < 7) {%>
+            <tr>
+                <% for( let i=0; i < days; i++) { %>
+                    <td>
+                        <div class="box_con">
+                            <% if (!checked[i]) {%>
+                                <img src="x-png-icon-18.png" style="display: none;" >
+                                <% } else { %>
+                                    <img src="x-png-icon-18.png" style="display: block;" >
+                                <% } %>
+                                <p><%= 'Day ' + count++ %></p>
+                        </div>
+                    </td>
+                    <% } %>
+            </tr>
+        <% } else {%>
+            <% if (days % 7 !==0 ) {%>
+                <% for( let i=0; i < ((days + (7 - missing))/7); i++) { %>
+                    <tr>
+                        <% if (i === ((days + (7 - missing))/7)-1) { %>
+                            <% for( let j=0; j < missing; j++) { %>
+                                <td>
+                                    <div class="box_con">
+                                        <% if (!checked[j]) {%>
+                                            <img src="x-png-icon-18.png" style="display: none;" >
+                                            <% } else { %>
+                                                <img src="x-png-icon-18.png" style="display: block;" >
+                                            <% } %>
+                                            <p><%= 'Day ' + count++ %></p>
+                                    </div>
+                                </td>
+                            <% } %>
+                        <% } else { %>
+                            <% for( let j=0; j < 7; j++) { %>   
+                                <td>
+                                    <div class="box_con">
+                                        <% if (!checked[j]) {%>
+                                            <img src="x-png-icon-18.png" style="display: none;" >
+                                            <% } else { %>
+                                                <img src="x-png-icon-18.png" style="display: block;" >
+                                            <% } %>
+                                            <p><%= 'Day ' + count++ %></p>
+                                    </div>
+                                </td>
+                            <% } %> 
+                        <% } %>
+                    </tr>
+                <% } %>
+            <% } else { %>
+                <% for (let i = 0; i < days/7; i++) {%>
+                    <tr>
+                        <% for (let j = 0; j < 7; j++) {%>
+                            <td>
+                                <div class="box_con">
+                                    <% if (!checked[j]) {%>
+                                        <img src="x-png-icon-18.png" style="display: none;" >
+                                        <% } else { %>
+                                            <img src="x-png-icon-18.png" style="display: block;" >
+                                        <% } %>
+                                        <p><%= 'Day ' + count++ %></p>
+                                </div>
+                            </td>
+                        <% } %>    
+                    </tr>
+                <% } %>    
+            <% } %>
+        <% } %>
+    </table>
+<br>
+<br>
+
+    
+        
+</body>
+
+</html>
