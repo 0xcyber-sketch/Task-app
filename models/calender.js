@@ -8,8 +8,9 @@ const  Calender = (() => {
         #tasks
 
         constructor() {
-            this.#id = ++lastID
+            this.#id = lastID
             this.#tasks = []
+            lastID++
         }
 
         getId() {
@@ -21,16 +22,20 @@ const  Calender = (() => {
         }
 
         addTask(task) {
-            if (task !== typeof(Task)) throw new Error("Type doesn't match")
-            return "Task added"
+            this.#tasks.push(task)
+        }
+
+        deleteTask(task) {
+            if (this.#tasks.includes(task)) {
+                let i = this.#tasks.indexOf(task)
+                this.#tasks.slice(i, 1)
+
+            }
         }
 
     }
 
 })()
 
-let c = new Calender()
-
-console.log(c.getTasks().length);
 
 export default Calender
