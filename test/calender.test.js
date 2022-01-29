@@ -1,9 +1,10 @@
 import { assert } from 'chai'
-import cal from '../models/calender.js'
+import factory from '../models/factory.js'
 
 describe("My callender", () => {
 
-    let c1 = new cal()
+    let fac = new factory()
+    let c1 = fac.create()
     let t = "Test"
 
     it('1) Calender is created empty', () => {
@@ -14,9 +15,10 @@ describe("My callender", () => {
 
     it('2) Calender dynamiccally increments ID', () => {
         // Test 
+        let c2 = fac.create()
+        let c3 = fac.create()
+
         let s1 = c1.getId()
-        let c2 = new cal()
-        let c3 = new cal()
         let s2 = c3.getId()
         let s3 = c2.getId()
 
