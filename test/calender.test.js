@@ -1,19 +1,23 @@
-import calender from '../models/calender.js'
+import { assert } from 'chai'
+import cal from '../models/calender.js'
 
 describe("My callender", () => {
 
-    beforeEach(() => {
-        const c = calender()
-    }) 
+    let c1 = new cal()
 
-    it('Calender is created empty', () => {
-        console.log(c);
+    it('1) Calender is created empty', () => {
+        // Test one
+        let subject = c1.getTasks().length
+        assert.strictEqual(subject, 0, "Tasks aren't empty")
+    })
 
+    t('1) Calender is created empty', () => {
+        // Test one
+        let subject = c1.getTasks().length
+        assert.strictEqual(subject, 0, "Tasks aren't empty")
+    })
 
+    it('calender add tasks')
 
-    } )
-
-    it.todo('calender add tasks')
-
-    it.todo('Calender tasks')
+    it('Calender tasks')
 })
