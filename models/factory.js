@@ -1,4 +1,5 @@
 import Calender from "./calender.js";
+import Task from "./task.js"
 
 
 function calenderFactory() {
@@ -7,4 +8,10 @@ function calenderFactory() {
     }
 }
 
-export default calenderFactory
+function taskFactory() {
+    this.create = (title, description) => {
+        return new Task(title, description)
+    }
+}
+
+export { calenderFactory, taskFactory}
