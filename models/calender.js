@@ -33,6 +33,15 @@ const  Calender = (() => {
             }
         }
 
+        findTask(task) {
+            if (this.#tasks.includes(task)) {
+                let i = this.#tasks.indexOf(task)
+                return this.#tasks[i]
+            }else {
+                throw new Error("Task is not in the task list")
+            }
+        }
+
     }
 
 })()
