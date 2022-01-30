@@ -1,7 +1,3 @@
-function createTask() {
-    t = {id, title, description}
-    return t
-}
 
 
 const  task = (() => {
@@ -38,8 +34,6 @@ const  task = (() => {
         setDescription(d) {
             this.#description = "" + d
         }
-
-
 
     }
 
