@@ -1,8 +1,20 @@
-function deleteTaskFromCalender(calender, task) {
-    
+import { calenderFactory, taskFactory } from "../models/factory"
+
+
+class Controller {
+
+    deleteTaskFromCalender(calender, task) {
+
+    }
+
+    addTaskForCalender(calender, task) {
+        let type = 
+            calender.addTask(task)
+    }
+
+
 }
 
-function addTaskForCalender(calender, task) {
-    calender.task.push(task)
-}
+
+
 
