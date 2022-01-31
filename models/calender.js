@@ -28,7 +28,7 @@ const  Calender = (() => {
         deleteTask(task) {
             if (this.#tasks.includes(task)) {
                 let i = this.#tasks.indexOf(task)
-                this.#tasks.slice(i, 1)
+                this.#tasks.splice(i, 1)
 
             }
         }

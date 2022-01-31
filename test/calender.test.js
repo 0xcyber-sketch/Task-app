@@ -1,12 +1,12 @@
 import { assert, expect } from 'chai'
-import {calenderFactory} from '../models/factory.js'
+import Factory from '../models/factory.js'
 
 describe("My callender", () => {
 
     
-    let fac = new calenderFactory()
-    let c1 = fac.create("Task 1", "Some description")
-    let t = "Test"
+    let fac = new Factory()
+    let c1 = fac.createCalenderFactory("Task 1", "Some description")
+    let t = fac.createTaskFactory("title", "des")
 
     it('1) Calender is created empty', () => {
         // Test one
@@ -16,8 +16,8 @@ describe("My callender", () => {
 
     it('2) Calender dynamiccally increments ID', () => {
         // Test 
-        let c2 = fac.create("Task 2", "Some description")
-        let c3 = fac.create("Task 3", "Some description")
+        let c2 = fac.createCalenderFactory("Task 2", "Some description")
+        let c3 = fac.createCalenderFactory("Task 3", "Some description")
 
         let s1 = c1.getId()
         let s2 = c3.getId()
@@ -60,10 +60,12 @@ describe("My callender", () => {
 
     it('5) Delete task', () => {
         let subject = c1.getTasks().length
-        assert.isAtLeast(subject, 1, "Length is less than 1")
+        assert.isAtLeast(subject, 2, "Length is less than 2")
 
-        subject = c1.deleteTask(t)
-        assert.include(c1.getTasks(),t, "Still contains object")
+        c1.deleteTask(t)
+
+        subject = c1.getTasks().length
+        assert.strictEqual(subject, 1, "Object is still there")
     })
 
     

@@ -2,7 +2,7 @@
 
 const  task = (() => {
     let lastID = 0
-    return class Calender {
+    return class Task {
 
         #id
         #title
