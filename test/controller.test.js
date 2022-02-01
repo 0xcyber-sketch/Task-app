@@ -13,6 +13,7 @@ describe("My controller", () => {
 
         assert.notStrictEqual(subject, undefined, "Calender obj is not created")
         assert.isNotNull(subject, "Calender obj is not created")
+        assert.isAbove(controller.getCalenders().length, 0, "Calender isn't added to calenders list") 
 
 
     })
@@ -25,7 +26,7 @@ describe("My controller", () => {
 
         
 
-        let t1 = c1.findTask(5) 
+        let t1 = c1.findTask(8) 
 
         controller.updateTask(t1, "new", "new")
 
@@ -33,14 +34,14 @@ describe("My controller", () => {
         assert.notStrictEqual(t1.getDescription(), "old", "Description aren't updated")
 
         controller.addTaskToCalender(c1, "old", "old")
-        let t2 = c1.findTask(6)
+        let t2 = c1.findTask(9)
         controller.updateTask(t2, "new", "")
 
         assert.notStrictEqual(t2.getTitle(), "old", "Title aren't updated")
         assert.strictEqual(t2.getDescription(), "old", "Description are changed")
 
         controller.addTaskToCalender(c1, "old", "old")
-        let t3 = c1.findTask(7)
+        let t3 = c1.findTask(10)
         controller.updateTask(t3, "", "new")
 
 
@@ -62,17 +63,21 @@ describe("My controller", () => {
 
         
         
-        let t1 = c1.findTask(9)
-
+        let t1 = c1.findTask(12)
        
         assert.strictEqual(c1.getTasks().length, 3)
         controller.deleteTaskFromCalender(c1,t1)
-        
         assert.strictEqual(c1.getTasks().length, 2)
+
+
+        /*
+        
+        console.log(c1.getTasks());
+        
    
         // figure out how to set a class object to null/undefined
         //assert.isNull(t2, "Task weren't deleted")
-
+*/
 
     })
 
