@@ -9,10 +9,6 @@ class Controller {
         return c
     }
 
-    createTask(title, description) {
-        let t = this.#fac.createTaskFactory(title, description)
-        return t
-    }
 
     updateTask( task, title, description) {
         let oldT = task.getTitle()
@@ -38,9 +34,8 @@ class Controller {
         
     }
 
-    addTaskForCalender(calender, task) {
-        if (!(task instanceof Task)) throw new Error("Task is not a task object")
-            calender.addTask(task)
+    addTaskToCalender(calender, title, description) {
+            calender.addTask(new Task(title, description))
     }
 
     
