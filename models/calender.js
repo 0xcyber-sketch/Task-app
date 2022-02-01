@@ -18,7 +18,7 @@ const  Calender = (() => {
         }
 
         getTasks() {
-            return this.#tasks
+            return [...this.#tasks]
         }
 
         addTask(task) {
@@ -27,9 +27,11 @@ const  Calender = (() => {
         }
 
         deleteTask(task) {
-            let i = this.#findTaskSearch(task)
+            let i = this.#findTaskSearch(task.getId())
             if (i !== -1) {
-                this.#tasks.splice(i, 1)
+                let arrNew = this.#tasks.splice(i, 1)
+
+
             }
         }
 
@@ -61,20 +63,6 @@ const  Calender = (() => {
 
 })()
 
-/*let  c1 = new Calender()
-
-let t1 = new task("hej", "hej")
-
-let t2 = new task("hejw", "hej")
-
-c1.addTask(t1)
-c1.addTask(t2)
-
-let t4 = new task("hsh", "hhs")
-
-let t3 = c1.findTask(t4)
-
-console.log("ID: " + t3.getId());*/
 
 
 export default Calender
