@@ -4,8 +4,13 @@ import Task from "../models/task.js"
 
 class Controller {
     #fac = new Factory()
+    #calenders
+    constructor() {
+        this.#calenders = []
+    }
     createCalender() {
         let c = this.#fac.createCalenderFactory()
+        this.#calenders.push(c)
         return c
     }
 
@@ -36,6 +41,35 @@ class Controller {
 
     addTaskToCalender(calender, title, description) {
             calender.addTask(new Task(title, description))
+    }
+
+    getcalenderFromID(id) {
+        let i = this.#findcalenderSearch(id)
+        if (i !== -1) {
+            return this.#calenders[i]
+        }else {
+            throw new Error("Calender is not in the calender list")
+        }
+    }
+
+    getCalenders() {
+        return [...this.#calenders]
+    }
+
+
+    #findcalenderSearch(x) {
+        // Look at binary search later
+        let index = -1
+        let i = 0
+        while (index === -1 && i < this.#calenders.length) {
+            if (this.#calenders[i].getId() === x) {
+                index = i
+            } 
+            else {
+                i++
+            }
+        }
+        return index
     }
 
     
