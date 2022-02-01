@@ -1,5 +1,5 @@
 import Controller from '../controller/controller.js'
-import { assert, expect } from "chai";
+import { assert } from "chai";
 
 
 describe("My controller", () => {

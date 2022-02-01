@@ -41,14 +41,15 @@ describe("My callender", () => {
     })
     
     it ('4) find task', () => {
-        let t1 = "task2"
+        let t1 = fac.createTaskFactory("task 2", "test")
         c1.addTask(t1)
 
         let subject = c1.findTask(t1)
+    
 
         expect(c1.getTasks()).to.include(subject)
 
-        let t2 = "task3"
+        let t2 = fac.createTaskFactory("task 3", "test")
 
         subject = t2
 
@@ -63,7 +64,6 @@ describe("My callender", () => {
         assert.isAtLeast(subject, 2, "Length is less than 2")
 
         c1.deleteTask(t)
-
         subject = c1.getTasks().length
         assert.strictEqual(subject, 1, "Object is still there")
     })
