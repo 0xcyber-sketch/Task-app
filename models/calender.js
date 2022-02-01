@@ -1,4 +1,4 @@
-import task from "./task.js"
+import Task from "./task.js"
 
 const  Calender = (() => {
     let lastID = 0
@@ -22,6 +22,7 @@ const  Calender = (() => {
         }
 
         addTask(task) {
+            if (!(task instanceof Task)) throw new Error("Task is not a task object")
             this.#tasks.push(task)
         }
 
@@ -32,8 +33,8 @@ const  Calender = (() => {
             }
         }
 
-        findTask(task) {
-            let i = this.#findTaskSearch(task)
+        findTask(taskid) {
+            let i = this.#findTaskSearch(taskid)
             if (i !== -1) {
                 return this.#tasks[i]
             }else {
@@ -46,7 +47,7 @@ const  Calender = (() => {
             let index = -1
             let i = 0
             while (index === -1 && i < this.#tasks.length) {
-                if (this.#tasks[i].getId() === x.getId()) {
+                if (this.#tasks[i].getId() === x) {
                     index = i
                 } 
                 else {
