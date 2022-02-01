@@ -1,5 +1,6 @@
 import { assert, expect } from 'chai'
 import Factory from '../models/factory.js'
+import Task from '../models/task.js'
 
 describe("My callender", () => {
 
@@ -65,12 +66,24 @@ describe("My callender", () => {
 
 
     it('5) Delete task', () => {
-        let subject = c1.getTasks().length
-        assert.isAtLeast(subject, 1, "Length is less than 2")
 
-        c1.deleteTask(t)
-        subject = c1.getTasks().length
-        assert.strictEqual(subject, 1, "Object is still there")
+        let c = fac.createCalenderFactory()
+
+        c.addTask(new Task("some task", "some description"))
+        c.addTask(new Task("some task", "some description"))
+        c.addTask(new Task("some task", "some description"))
+
+
+
+        let subject = c.getTasks().length
+        assert.strictEqual(subject, 3, "Elements aren't added to the calender object")
+        let t1 = c.findTask(6)
+        c.deleteTask(t1)
+        subject = c.getTasks().length
+        assert.strictEqual(subject, 2, "Element is not deleted to the calender object")
+
+       
+
     })
 
     
