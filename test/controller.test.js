@@ -17,70 +17,56 @@ describe("My controller", () => {
 
     })
 
-    it('2) Create Task', () => {
-        let subject = null
-        subject = controller.createTask("task", "Some description")
 
+    it ('2) Update task properly', () => {
+        
+        let c1 = controller.createCalender()
+        controller.addTaskToCalender(c1, "old", "old")
 
-        assert.notStrictEqual(subject, undefined, "Task obj is not created")
-        assert.isNotNull(subject, "Calender obj is not created")
+        
 
+        let t1 = c1.findTask(5) 
 
-    })
-
-    it ('3) Update task properly', () => {
-        let t1 = controller.createTask("old", "old")
         controller.updateTask(t1, "new", "new")
 
         assert.notStrictEqual(t1.getTitle(), "old", "Title aren't updated")
         assert.notStrictEqual(t1.getDescription(), "old", "Description aren't updated")
 
-        let t2 = controller.createTask("old", "old")
+        controller.addTaskToCalender(c1, "old", "old")
+        let t2 = c1.findTask(6)
         controller.updateTask(t2, "new", "")
 
         assert.notStrictEqual(t2.getTitle(), "old", "Title aren't updated")
         assert.strictEqual(t2.getDescription(), "old", "Description are changed")
 
-        
-        let t3 = controller.createTask("old", "old")
+        controller.addTaskToCalender(c1, "old", "old")
+        let t3 = c1.findTask(7)
         controller.updateTask(t3, "", "new")
+
 
         assert.strictEqual(t3.getTitle(), "old", "Title are changed")
         assert.notStrictEqual(t3.getDescription(), "old", "Description aren't updated")
 
-    })
-
-    it('5) Task added to a calender', () => {
-        let c1 = controller.createCalender()
-        let t1 = controller.createTask("some task", "some description")
-
-        controller.addTaskForCalender(c1, t1)
-        assert.strictEqual(c1.getTasks().length, 1, "Task aren't added to the calender")
-
-        let t2 = "Task as a string"
-        let t3 = 6372
-
-        assert.throws(() => controller.addTaskForCalender(c1, t2) , Error, "Task is not a task object")
-        assert.throws(() => controller.addTaskForCalender(c1, t3) , Error, "Task is not a task object")
-
-
-
-
 
     })
 
-    it('6) Task deleted from calender', () => {
+   
+
+    it('3) Task deleted from calender', () => {
         let c1 = controller.createCalender()
-        let t1 = controller.createTask("some task", "some description")
-        let t2 = controller.createTask("some task", "some description")
-        let t3 = controller.createTask("some task", "some description")
 
-        controller.addTaskForCalender(c1, t1)
-        controller.addTaskForCalender(c1, t2)
-        controller.addTaskForCalender(c1, t3)
 
+        controller.addTaskToCalender(c1,"some task", "some description")
+        controller.addTaskToCalender(c1,"some task", "some description")
+        controller.addTaskToCalender(c1,"some task", "some description")
+
+        
+        
+        let t1 = c1.findTask(9)
+
+       
         assert.strictEqual(c1.getTasks().length, 3)
-        controller.deleteTaskFromCalender(c1,t2)
+        controller.deleteTaskFromCalender(c1,t1)
         
         assert.strictEqual(c1.getTasks().length, 2)
    
