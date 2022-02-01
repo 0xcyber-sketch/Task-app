@@ -1,5 +1,5 @@
 import Controller from '../controller/controller.js'
-import { assert } from "chai";
+import { assert, expect } from "chai";
 
 
 describe("My controller", () => {
@@ -69,17 +69,47 @@ describe("My controller", () => {
         controller.deleteTaskFromCalender(c1,t1)
         assert.strictEqual(c1.getTasks().length, 2)
 
+    })
 
-        /*
+    it('4) Find calender by id', () => {
+
+        let con = new Controller()
+        con.createCalender()
+        let c1 = con.createCalender()
+        con.createCalender()
+
+
+        let subject = con.getcalenderFromID(c1.getId())
+
+        expect(con.getCalenders()).to.include(subject)
+
+        con.deleteCalender(c1)
+
         
-        console.log(c1.getTasks());
         
-   
-        // figure out how to set a class object to null/undefined
-        //assert.isNull(t2, "Task weren't deleted")
-*/
+        assert.throws(() => con.getcalenderFromID(c1.getId()), Error, "Calender is not in the calender list")
 
     })
 
+
+    it('5) Delete calender', () => {
+
+        let con = new Controller()
+
+        let c1 = con.createCalender()
+        let c2 = con.createCalender()
+        let c3 = con.createCalender()
+
+        let subject = con.getCalenders().length
+        assert.strictEqual(subject, 3, "Elements aren't added to the calender object")
+
+        con.deleteCalender(c2)
+        subject = con.getCalenders().length
+        assert.strictEqual(subject, 2, "Element is not deleted to the calender object")
+
+
+       
+
+    })
 
 })

@@ -29,7 +29,7 @@ const  Calender = (() => {
         deleteTask(task) {
             let i = this.#findTaskSearch(task.getId())
             if (i !== -1) {
-                let arrNew = this.#tasks.splice(i, 1)
+                this.#tasks.splice(i, 1)
 
 
             }

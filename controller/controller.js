@@ -58,7 +58,6 @@ class Controller {
 
 
     #findcalenderSearch(x) {
-        // Look at binary search later
         let index = -1
         let i = 0
         while (index === -1 && i < this.#calenders.length) {
@@ -72,13 +71,19 @@ class Controller {
         return index
     }
 
+    deleteCalender(calender) {
+        let i = this.#findcalenderSearch(calender.getId())
+        if (i !== -1) {
+            this.#calenders.splice(i, 1)
+        }
+    }
+
+
+
     
 
 
 }
-
-
-
 
 
 export default Controller
