@@ -30,28 +30,33 @@ describe("My callender", () => {
 
     it('3) Add tasks', () => {
         
-        
-        let subject = c1.getTasks().length
-        assert.strictEqual(subject, 0, "Tasks aren't empty")
-        c1.addTask(t)
+        let c1 = fac.createCalenderFactory()
+        let t1 = fac.createTaskFactory("some task", "some description")
 
-        subject = c1.getTasks().length
-        assert.strictEqual(subject, 1, "Tasks didn't update")
+        c1.addTask(t1)
+        assert.strictEqual(c1.getTasks().length, 1, "Task aren't added to the calender")
+
+        let t2 = "Task as a string"
+        let t3 = 6372
+
+        assert.throws(() => c1.addTask(t2) , Error, "Task is not a task object")
+        assert.throws(() => c1.addTask(t3) , Error, "Task is not a task object")
 
     })
     
     it ('4) find task', () => {
         let t1 = fac.createTaskFactory("task 2", "test")
+        let t1Id = t1.getId()
         c1.addTask(t1)
 
-        let subject = c1.findTask(t1)
+        let subject = c1.findTask(t1Id)
     
 
         expect(c1.getTasks()).to.include(subject)
 
         let t2 = fac.createTaskFactory("task 3", "test")
 
-        subject = t2
+        subject = t2.getId()
 
         assert.throws(() => c1.findTask(subject), Error, "Task is not in the task list")
 
@@ -61,7 +66,7 @@ describe("My callender", () => {
 
     it('5) Delete task', () => {
         let subject = c1.getTasks().length
-        assert.isAtLeast(subject, 2, "Length is less than 2")
+        assert.isAtLeast(subject, 1, "Length is less than 2")
 
         c1.deleteTask(t)
         subject = c1.getTasks().length
