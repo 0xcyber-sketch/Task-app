@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart calender || create </title>
+    <script src="create.js" defer></script>
+</head>
+
+<body>
+    <h1>Smart calender</h1>
+    <p>You can choose between a pre-defined length for your calender. Or you can choose to create your own calender</p>
+    <div class="radioButtons">
+        <input id="pre" type="radio" value="Pre-defined" name="calender" checked onchange="change(this)">
+        <label for="pre">Pre-defined</label><br>
+        <input id="cus" type="radio" value="Custom" name="calender" onchange="change(this)">
+        <label for="cus">Custom</label><br>
+    </div>
+    <div class="result">
+        <div>
+            <form action="/create/create" method="post">
+                <div class="pred">
+                    <label for="sizes">Choose a desired amount of days:</label>
+                    <select id="sizes" name="sizes">
+                        <option value="7 Days">7 Days</option>
+                        <option value="14 Days">14 Days</option>
+                        <option value="30 Days">30 Days</option>
+                        <option value="90 Days">90 Days</option>
+                    </select>
+                    <br>
+                </div>
+                <div class="cus" style="display: none;">
+                    <label>Title:
+                        <input type="text" name="cusTitle" >
+                    </label> <br>
+                    <label>Description:
+                    </label>
+                    <br>
+                    <textarea name=" cusDescription" rows="4" cols="50" style="resize: none;"
+                        maxlength="500"></textarea><br>
+                    <label> Days:
+                        <input type="number" min="1" max="99999" name="days">
+                    </label>
+                    <br>
+                </div>
+                <input type="hidden" value="" name="value">
+        </div>
+        <button type="submit" >Submit</button>
+        </form>
+        
+
+    </div>
+</body>
+
+</html>
