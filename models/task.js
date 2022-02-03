@@ -1,7 +1,7 @@
 
 
 const  task = (() => {
-    let lastID = 0
+    let lastID = 1
     return class Task {
 
         #id

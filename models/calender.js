@@ -1,16 +1,19 @@
 import Task from "./task.js"
 
 const  Calender = (() => {
-    let lastID = 0
+    let lastID = 1
     return class Calender {
 
         #id
         #tasks
+        #type
+        #days
 
         constructor() {
             this.#id = lastID
             this.#tasks = []
             lastID++
+            this.#type = ""
         }
 
         getId() {
@@ -30,8 +33,6 @@ const  Calender = (() => {
             let i = this.#findTaskSearch(task.getId())
             if (i !== -1) {
                 this.#tasks.splice(i, 1)
-
-
             }
         }
 
@@ -58,6 +59,14 @@ const  Calender = (() => {
             }
             return index
         }
+
+        getType() {return this.#type}
+
+        setType(type) {this.#tasks = type}
+
+        getDays() {return this.#days}
+
+        setType(days) {this.#days = days}
 
     }
 
