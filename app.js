@@ -7,11 +7,14 @@ import homeRoute from './routes/home.js'
 import errorRoute from './routes/error.js'
 import calenderRoute from './routes/calender.js'
 import session from "express-session";
+import Controller from "./controller/controller.js";
 
 
 
 
 const app = express()
+
+export const controller = new Controller()
 
 function setHeader(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');

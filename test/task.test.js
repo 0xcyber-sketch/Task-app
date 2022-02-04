@@ -25,9 +25,9 @@ describe("My task", () => {
         let s2 = t3.getId()
         let s3 = t2.getId()
 
-        assert.strictEqual(s1, 1, "ID is not incremented")
-        assert.strictEqual(s2, 16, "ID is not incremented")
-        assert.strictEqual(s3, 15, "ID is not incremented")
+        assert.strictEqual(s1, 2, "ID is not incremented")
+        assert.strictEqual(s2, 17, "ID is not incremented")
+        assert.strictEqual(s3, 16, "ID is not incremented")
     })
 
     it('3) set title', () => {

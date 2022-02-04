@@ -9,11 +9,12 @@ const  Calender = (() => {
         #type
         #days
 
-        constructor() {
+        constructor(type, days) {
             this.#id = lastID
             this.#tasks = []
             lastID++
-            this.#type = ""
+            this.#type = type
+            this.#days = days
         }
 
         getId() {
@@ -66,7 +67,11 @@ const  Calender = (() => {
 
         getDays() {return this.#days}
 
-        setType(days) {this.#days = days}
+        setDays(days) {
+            //console.log(typeof days);
+            if (typeof days !== 'number') throw new Error("Days has to be a number!")
+            this.#days = Math.floor(days)
+        }
 
     }
 

@@ -8,14 +8,19 @@ class Controller {
     constructor() {
         this.#calenders = []
     }
-    createCalender() {
-        let c = this.#fac.createCalenderFactory()
-        this.#calenders.push(c)
-        return c
+    createCalender(type, days) {
+        try {
+            let c = this.#fac.createCalenderFactory(type, days)
+            this.#calenders.push(c)
+            return c
+        }
+        catch (e) {
+            throw new Error(e)
+        }
     }
 
 
-    updateTask( task, title, description) {
+    updateTask(task, title, description) {
         let oldT = task.getTitle()
         let oldD = task.getDescription()
 
@@ -36,18 +41,18 @@ class Controller {
 
     deleteTaskFromCalender(calender, task) {
         calender.deleteTask(task)
-        
+
     }
 
     addTaskToCalender(calender, title, description) {
-            calender.addTask(new Task(title, description))
+        calender.addTask(new Task(title, description))
     }
 
     getcalenderFromID(id) {
         let i = this.#findcalenderSearch(id)
         if (i !== -1) {
             return this.#calenders[i]
-        }else {
+        } else {
             throw new Error("Calender is not in the calender list")
         }
     }
@@ -63,7 +68,7 @@ class Controller {
         while (index === -1 && i < this.#calenders.length) {
             if (this.#calenders[i].getId() === x) {
                 index = i
-            } 
+            }
             else {
                 i++
             }
@@ -78,13 +83,5 @@ class Controller {
         }
     }
 
-
-
-    
-
-
 }
-
-
 export default Controller
-

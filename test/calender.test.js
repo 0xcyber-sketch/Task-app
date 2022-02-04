@@ -6,7 +6,7 @@ describe("My callender", () => {
 
     
     let fac = new Factory()
-    let c1 = fac.createCalenderFactory("Task 1", "Some description")
+    let c1 = fac.createCalenderFactory("Task 1", 13)
     let t = fac.createTaskFactory("title", "des")
 
     it('1) Calender is created empty', () => {
@@ -17,21 +17,21 @@ describe("My callender", () => {
 
     it('2) Calender dynamiccally increments ID', () => {
         // Test 
-        let c2 = fac.createCalenderFactory("Task 2", "Some description")
-        let c3 = fac.createCalenderFactory("Task 3", "Some description")
+        let c2 = fac.createCalenderFactory('pre', 13)
+        let c3 = fac.createCalenderFactory('pre', 13)
 
         let s1 = c1.getId()
         let s2 = c3.getId()
         let s3 = c2.getId()
 
-        assert.strictEqual(s1, 0, "ID is not incremented")
-        assert.strictEqual(s2, 2, "ID is not incremented")
-        assert.strictEqual(s3, 1, "ID is not incremented")
+        assert.strictEqual(s1, 1, "ID is not incremented")
+        assert.strictEqual(s2, 3, "ID is not incremented")
+        assert.strictEqual(s3, 2, "ID is not incremented")
     })
 
     it('3) Add tasks', () => {
         
-        let c1 = fac.createCalenderFactory()
+        let c1 = fac.createCalenderFactory('pre', 13)
         let t1 = fac.createTaskFactory("some task", "some description")
 
         c1.addTask(t1)
@@ -67,7 +67,7 @@ describe("My callender", () => {
 
     it('5) Delete task', () => {
 
-        let c = fac.createCalenderFactory()
+        let c = fac.createCalenderFactory('pre', 24)
 
         c.addTask(new Task("some task", "some description"))
         c.addTask(new Task("some task", "some description"))
