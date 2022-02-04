@@ -24,7 +24,7 @@ const  task = (() => {
         }
 
         setTitle(t) {
-            this.#title = "" + t
+            this.#title = t
         }
 
         getDescription() {
@@ -32,7 +32,7 @@ const  task = (() => {
         }
 
         setDescription(d) {
-            this.#description = "" + d
+            this.#description = d
         }
 
     }

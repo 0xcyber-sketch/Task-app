@@ -39,7 +39,6 @@ describe("My controller", () => {
         controller.updateTask(t2, "new", "")
 
         assert.notStrictEqual(t2.getTitle(), "old", "Title aren't updated")
-        assert.strictEqual(t2.getDescription(), "old", "Description are changed")
 
         controller.addTaskToCalender(c1, "old", "old")
         let t3 = c1.findTask(11)
@@ -47,7 +46,6 @@ describe("My controller", () => {
 
 
         assert.strictEqual(t3.getTitle(), "old", "Title are changed")
-        assert.notStrictEqual(t3.getDescription(), "old", "Description aren't updated")
 
 
     })

@@ -22,20 +22,15 @@ class Controller {
 
     updateTask(task, title, description) {
         let oldT = task.getTitle()
-        let oldD = task.getDescription()
 
         let newT = title
-        let newD = description
 
         if (newT === '') {
             newT = oldT
         }
-        if (newD === '') {
-            newD = oldD
-        }
 
         task.setTitle(newT)
-        task.setDescription(newD)
+        task.setDescription(description)
 
     }
 
