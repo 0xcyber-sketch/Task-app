@@ -3,7 +3,6 @@ import express  from "express";
 import indexRoute from './routes/index.js'
 import loggedInRoute from './routes/loggedIn.js'
 
-import homeRoute from './routes/home.js'
 import errorRoute from './routes/error.js'
 import calenderRoute from './routes/calender.js'
 import session from "express-session";
