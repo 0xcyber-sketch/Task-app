@@ -3,18 +3,21 @@ import Task from "./task.js"
 const  Calender = (() => {
     let lastID = 1
     return class Calender {
-
         #id
         #tasks
         #type
         #days
+        #description
+        #title
 
-        constructor(type, days) {
+        constructor(type, days, title, descripion) {
             this.#id = lastID
             this.#tasks = []
             lastID++
             this.#type = type
             this.#days = days
+            this.#description = descripion || ""
+            this.#title = title
         }
 
         getId() {
@@ -64,6 +67,13 @@ const  Calender = (() => {
         getType() {return this.#type}
 
         setType(type) {this.#tasks = type}
+
+        getTitle() {return this.#title}
+
+        setTitle(title) {this.#title = title}
+        getDescription() {return this.#description}
+
+        setDescription(des) {this.#description = des}
 
         getDays() {return this.#days}
 

@@ -10,7 +10,9 @@ router.post('/signIn', (req,res) => {
 
     req.session.login = true
     if (req.session.login) {
-        req.session.name = data.uname
+
+        let obj = {name: data.uname, calendar: []}
+        req.session.user = JSON.stringify(obj)
     }
     res.sendStatus(201)
 })

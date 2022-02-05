@@ -2,8 +2,8 @@ import Calender from "./calender.js";
 import Task from "./task.js"
 
 class Factory {
-    createCalenderFactory(type, days) {
-        let c = new Calender(type, days)
+    createCalenderFactory(type, days, title, description) {
+        let c = new Calender(type, days, title, description)
         c.setDays(days)
         return c
            

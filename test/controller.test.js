@@ -22,7 +22,7 @@ describe("My controller", () => {
 
     it ('2) Update task properly', () => {
         
-        let c1 = controller.createCalender('pre', 13)
+        let c1 = controller.createCalender('pre', 13, "title", "description")
         controller.addTaskToCalender(c1, "old", "old")
 
         
@@ -53,7 +53,7 @@ describe("My controller", () => {
    
 
     it('3) Task deleted from calender', () => {
-        let c1 = controller.createCalender('pre', 13)
+        let c1 = controller.createCalender('pre', 13, "title", "description")
 
 
         controller.addTaskToCalender(c1,"some task", "some description")
@@ -73,9 +73,9 @@ describe("My controller", () => {
     it('4) Find calender by id', () => {
 
         let con = new Controller()
-        con.createCalender('pre', 13)
-        let c1 = con.createCalender('pre', 13)
-        con.createCalender('pre', 13)
+        con.createCalender('pre', 13, "title", "description")
+        let c1 = con.createCalender('pre', 13, "title", "description")
+        con.createCalender('pre', 13, "title", "description")
 
 
         let subject = con.getcalenderFromID(c1.getId())
@@ -95,9 +95,9 @@ describe("My controller", () => {
 
         let con = new Controller()
 
-        let c1 = con.createCalender('pre', 13)
-        let c2 = con.createCalender('pre', 13)
-        let c3 = con.createCalender('pre', 13)
+        let c1 = con.createCalender('pre', 13, "title", "description")
+        let c2 = con.createCalender('pre', 13, "title", "description")
+        let c3 = con.createCalender('pre', 13, "title", "description")
 
         let subject = con.getCalenders().length
         assert.strictEqual(subject, 3, "Elements aren't added to the calender object")

@@ -8,9 +8,9 @@ class Controller {
     constructor() {
         this.#calenders = []
     }
-    createCalender(type, days) {
+    createCalender(type, days, title, description) {
         try {
-            let c = this.#fac.createCalenderFactory(type, days)
+            let c = this.#fac.createCalenderFactory(type, days, title, description)
             this.#calenders.push(c)
             return c
         }

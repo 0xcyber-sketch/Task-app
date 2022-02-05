@@ -6,7 +6,7 @@ describe("My callender", () => {
 
     
     let fac = new Factory()
-    let c1 = fac.createCalenderFactory("Task 1", 13)
+    let c1 = fac.createCalenderFactory("Task 1", 13, "title", "description")
     let t = fac.createTaskFactory("title", "des")
 
     it('1) Calender is created empty', () => {
@@ -17,8 +17,8 @@ describe("My callender", () => {
 
     it('2) Calender dynamiccally increments ID', () => {
         // Test 
-        let c2 = fac.createCalenderFactory('pre', 13)
-        let c3 = fac.createCalenderFactory('pre', 13)
+        let c2 = fac.createCalenderFactory('pre', 13, "title", "description")
+        let c3 = fac.createCalenderFactory('pre', 13, "title", "description")
 
         let s1 = c1.getId()
         let s2 = c3.getId()
@@ -31,7 +31,7 @@ describe("My callender", () => {
 
     it('3) Add tasks', () => {
         
-        let c1 = fac.createCalenderFactory('pre', 13)
+        let c1 = fac.createCalenderFactory('pre', 13, "title", "description")
         let t1 = fac.createTaskFactory("some task", "some description")
 
         c1.addTask(t1)
@@ -67,7 +67,7 @@ describe("My callender", () => {
 
     it('5) Delete task', () => {
 
-        let c = fac.createCalenderFactory('pre', 24)
+        let c = fac.createCalenderFactory('pre', 24, "title", "description")
 
         c.addTask(new Task("some task", "some description"))
         c.addTask(new Task("some task", "some description"))
