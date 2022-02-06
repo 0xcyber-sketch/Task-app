@@ -70,31 +70,39 @@ router.post('/create/c', (req, res) => {
 
 
 router.get('/calender/:id/', helper, (req, res) => {
-    if (req.session.login) {
-
-        let value = req.days
-        let title = req.title
-        let description = req.description
-
-        let checked
-
-
-        if (!req.session.checked) {
-            checked = []
-            for (let i = 0; i < value; i++) {
-                checked[i] = false
+    let user = JSON.parse(req.session.user)
+    try {
+        if (req.session.login && user.calendar.includes(parseInt(req.params.id))) {
+            console.log();
+    
+            let value = req.days
+            let title = req.title
+            let description = req.description
+    
+            let checked
+    
+    
+            if (!req.session.checked) {
+                checked = []
+                for (let i = 0; i < value; i++) {
+                    checked[i] = false
+                }
+                req.session.checked = checked
             }
-            req.session.checked = checked
-        }
-
-        else {
-
-            checked = req.session.checked
-
-        }
-        res.render('calender.ejs', {days: value, missing: (value%7), title: title, description: description, checked: checked})
-        //
+    
+            else {
+    
+                checked = req.session.checked
+    
+            }
+            res.render('calender.ejs', {days: value, missing: (value%7), title: title, description: description, checked: checked})}
+            else {
+                throw new Error("Calendar with this idea doesnt exist")
+            }
+    } catch (error) {
+        res.redirect('/error')
     }
+    
 
 })
 

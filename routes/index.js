@@ -2,7 +2,12 @@ import express from 'express'
 const router = express.Router()
 
 router.get('/', (req, res) => {
-    res.render('index.ejs')
+    if (req.session.login) {
+        res.redirect('/u/home')
+    } else {
+        res.render('index.ejs')
+    }
+    
 })
 
 router.post('/signIn', (req,res) => {

@@ -38,12 +38,13 @@ const routeIndex = indexRoute;
 app.use('/', routeIndex)
 const routeLoggedIn = loggedInRoute
 app.use('/u', routeLoggedIn)
+const routeError = errorRoute
+app.use('/error', routeError)
 
 
 /*const routeHome = homeRoute
 app.use('/', routeHome)
-const routeError = errorRoute
-app.use('/error', routeError)
+
 const routeCalender = calenderRoute
 app.use('/calender', routeCalender)
 */
