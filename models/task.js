@@ -7,12 +7,14 @@ const  task = (() => {
         #id
         #title
         #description
+        #days
 
         constructor(title, description) {
             this.#id = lastID
             lastID++
             this.#title = title
             this.#description = description
+            this.#days = []
         }
 
         getId() {
@@ -34,6 +36,16 @@ const  task = (() => {
         setDescription(d) {
             this.#description = d
         }
+
+        getDays() {
+            return [...this.#days]
+        }
+
+        addDay(d) {
+            this.#days.push(d)
+        }
+
+        // Delete task
 
     }
 
