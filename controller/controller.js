@@ -78,5 +78,10 @@ class Controller {
         }
     }
 
+    // Validating 
+
+    
+
+
 }
 export default Controller
