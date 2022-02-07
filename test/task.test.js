@@ -54,6 +54,35 @@ describe("My task", () => {
 
     }) 
 
+    it('5) Add day', () => {
+        
+        let t1 = fac.createTaskFactory("some task", "some description")
+
+        assert.strictEqual(t1.getDays().length, 0, "Task's days list aren't created empty")
+
+        t1.addDay(7)
+        
+
+      
+        assert.strictEqual(t1.getDays().length, 1, "Task's days list aren't updated")
+
+       
+
+
+        assert.throws(() =>  t1.addDay("Hello") , Error, "Input day is not a number")
+        assert.throws(() => t1.addDay(-1)  , Error, "Day has to be greater than 0")
+
+        t1.addDay(3)
+        t1.addDay(2)
+
+        t1.addDay(2)
+
+        assert.strictEqual(t1.getDays().length, 3, "Task's days list is updated with an existing day")
+
+    })
+
+
+
 
     
 }) 
