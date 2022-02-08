@@ -49,7 +49,6 @@ router.post('/create/c', (req, res) => {
             let description = "This is a basic description for " + amount + " days calender"
             let c = controller.createCalender(response.value, amount, title, description)
 
-            console.log(controller.getCalenders());
 
             let user = JSON.parse(req.session.user)
             let obj = {id: c.getId(), checkedDays: []}
@@ -76,7 +75,7 @@ function findeIndexForCalenderID (array, x) {
 
     while (i < array.length && index === -1) {
         if(array[i].id === x) {
-            index = i
+            return i
         } else {
             i++
         }
