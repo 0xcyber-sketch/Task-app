@@ -132,12 +132,25 @@ function helper(req, res, next) {
     next()
 }
 
-router.post('/checked', (req, res) => {
-    if (req.session.data) {
+router.post('/day/checked/', (req, res) => {
+    if (req.session.login) {
+        console.log("AYE");
         let data = req.body.data
         req.session.checked[data - 1] = true
         res.sendStatus(201)
 
+    }
+})
+
+router.post('/task/add/', (req, res) => {
+    if (req.session.login) {
+        let user = JSON.parse(req.session.user)
+        
+        
+        console.log("Aye");
+        let data = req.body
+        console.log(data);
+        res.sendStatus(201)
     }
 })
 

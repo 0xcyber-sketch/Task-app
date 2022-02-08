@@ -6,7 +6,7 @@ function addevents() {
     }
 }
 
-function onClickFunction(event) {
+async function  onClickFunction(event) {
     let node = event.target
     let data
     if (node.nodeName === 'TD') {
@@ -20,21 +20,24 @@ function onClickFunction(event) {
 
     }
     data = { data: parseInt(data.split(" ")[1]) }
-    post(data)
+    await post(data, '/u/day/checked/')
 
 }
 
+function addTaskHandler() {
+    let data = {}
+    data.title = document.querySelectorAll('input')[0].value
+    data.description = document.getElementById("taskDes").value
+    data.calendarID = window.location.href.split('/')[5]
+
+ 
+    console.log(data);
+
+    post(data, '/u/task/add/')
 
 
-async function post(data) {
-    await fetch('/calender/checked', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    })
 }
+
 
 function main() {
     addevents()
