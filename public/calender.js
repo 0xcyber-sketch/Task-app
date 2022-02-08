@@ -6,21 +6,23 @@ function addevents() {
     }
 }
 
-async function  onClickFunction(event) {
+function onClickFunction(event) {
     let node = event.target
     let data
     if (node.nodeName === 'TD') {
         node.lastElementChild.firstElementChild.style.display = 'block'
         data = node.lastElementChild.lastElementChild.innerHTML
-
     }
     else {
         node.previousElementSibling.style.display = 'block'
         data = node.innerHTML
 
     }
+
     data = { data: parseInt(data.split(" ")[1]), calendarId: getCIDFromURL() }
-    await post(data, '/u/day/checked/')
+    post(data, '/u/day/checked/')
+
+
 
 }
 
@@ -30,7 +32,7 @@ function addTaskHandler() {
     data.description = document.getElementById("taskDes").value
     data.calendarID = getCIDFromURL()
 
- 
+
     console.log(data);
 
     post(data, '/u/task/add/')
