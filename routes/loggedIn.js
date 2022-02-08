@@ -33,7 +33,8 @@ router.post('/create/c', (req, res) => {
             let c = controller.createCalender(response.value, amount, response.cusTitle, response.cusDescription)
 
             let user = JSON.parse(req.session.user)
-            user.calendar.push(c.getId())
+            let obj = {id: c.getId(), checkedDays: []}
+            user.calendar.push(obj)
 
 
             req.session.user = JSON.stringify(user)
@@ -51,7 +52,8 @@ router.post('/create/c', (req, res) => {
             console.log(controller.getCalenders());
 
             let user = JSON.parse(req.session.user)
-            user.calendar.push(c.getId())
+            let obj = {id: c.getId(), checkedDays: []}
+            user.calendar.push(obj)
 
 
             req.session.user = JSON.stringify(user)
@@ -68,31 +70,56 @@ router.post('/create/c', (req, res) => {
 
 })
 
+function findeIndexForCalenderID (array, x) {
+    let i = 0;
+    let index = -1;
+
+    while (i < array.length && index === -1) {
+        if(array[i].id === x) {
+            index = i
+        } else {
+            i++
+        }
+
+    }
+    
+    return index 
+}
+
 
 router.get('/calender/:id/', helper, (req, res) => {
     let user = JSON.parse(req.session.user)
+    let cID = -1
+
+    let cIndex = findeIndexForCalenderID(user.calendar, parseInt(req.params.id))
+
+    cID = user.calendar[cIndex].id
+
+       
+
     try {
-        if (req.session.login && user.calendar.includes(parseInt(req.params.id))) {
+        if (req.session.login && cID !== -1) {
             console.log();
     
             let value = req.days
             let title = req.title
             let description = req.description
     
-            let checked
+
+            let checked = user.calendar[cIndex].checkedDays
     
-    
-            if (!req.session.checked) {
-                checked = []
+            if (checked.length === 0) {
                 for (let i = 0; i < value; i++) {
                     checked[i] = false
                 }
-                req.session.checked = checked
+                user.calendar[cIndex].checkedDays = checked
+
+                req.session.user = JSON.stringify(user)
             }
     
             else {
     
-                checked = req.session.checked
+                checked = user.calendar[cIndex].checkedDays
     
             }
             res.render('calender.ejs', {days: value, missing: (value%7), title: title, description: description, checked: checked})}
@@ -134,9 +161,14 @@ function helper(req, res, next) {
 
 router.post('/day/checked/', (req, res) => {
     if (req.session.login) {
-        console.log("AYE");
+        let user = JSON.parse(req.session.user)
+        let cID = req.body.calendarId
+
         let data = req.body.data
-        req.session.checked[data - 1] = true
+
+        let cIndex = findeIndexForCalenderID(user.calendar, cID)
+        user.calendar[cIndex].checkedDays[data - 1] = true
+        req.session.user = JSON.stringify(user)
         res.sendStatus(201)
 
     }

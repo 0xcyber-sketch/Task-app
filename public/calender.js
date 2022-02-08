@@ -19,7 +19,7 @@ async function  onClickFunction(event) {
         data = node.innerHTML
 
     }
-    data = { data: parseInt(data.split(" ")[1]) }
+    data = { data: parseInt(data.split(" ")[1]), calendarId: getCIDFromURL() }
     await post(data, '/u/day/checked/')
 
 }
@@ -28,7 +28,7 @@ function addTaskHandler() {
     let data = {}
     data.title = document.querySelectorAll('input')[0].value
     data.description = document.getElementById("taskDes").value
-    data.calendarID = window.location.href.split('/')[5]
+    data.calendarID = getCIDFromURL()
 
  
     console.log(data);
