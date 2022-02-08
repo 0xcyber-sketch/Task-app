@@ -175,8 +175,12 @@ router.post('/day/checked/', (req, res) => {
 
 router.post('/task/add/', (req, res) => {
     if (req.session.login) {
+        let id = parseInt(req.body.calendarID)
         let user = JSON.parse(req.session.user)
-        
+        let c = controller.getcalenderFromID(id)
+
+        controller.addTaskToCalender(c, req.body.title, req.body.description)
+        let t = c.findTask(1) // Needs some work
         
         console.log("Aye");
         let data = req.body
