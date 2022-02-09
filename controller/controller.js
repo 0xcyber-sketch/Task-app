@@ -39,8 +39,8 @@ class Controller {
 
     }
 
-    addTaskToCalender(calender, title, description) {
-        calender.addTask(new Task(title, description))
+    addTaskToCalender(calender, title, description, day) {
+        calender.addTask(new Task(title, description, day))
     }
 
     getcalenderFromID(id) {

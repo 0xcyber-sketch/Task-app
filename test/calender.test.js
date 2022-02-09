@@ -7,7 +7,7 @@ describe("My callender", () => {
     
     let fac = new Factory()
     let c1 = fac.createCalenderFactory("Task 1", 13, "title", "description")
-    let t = fac.createTaskFactory("title", "des")
+    let t = new Task("Task", "Description", 4)
 
     it('1) Calender is created empty', () => {
         // Test one
@@ -32,7 +32,7 @@ describe("My callender", () => {
     it('3) Add tasks', () => {
         
         let c1 = fac.createCalenderFactory('pre', 13, "title", "description")
-        let t1 = fac.createTaskFactory("some task", "some description")
+        let t1 = new Task("Task", "Description", 4)
 
         c1.addTask(t1)
         assert.strictEqual(c1.getTasks().length, 1, "Task aren't added to the calender")
@@ -46,7 +46,7 @@ describe("My callender", () => {
     })
     
     it ('4) find task', () => {
-        let t1 = fac.createTaskFactory("task 2", "test")
+        let t1 = new Task("Task", "Description", 4)
         let t1Id = t1.getId()
         c1.addTask(t1)
 
@@ -55,7 +55,7 @@ describe("My callender", () => {
 
         expect(c1.getTasks()).to.include(subject)
 
-        let t2 = fac.createTaskFactory("task 3", "test")
+        let t2 = new Task("Task", "Description", 4)
 
         subject = t2.getId()
 
@@ -69,9 +69,9 @@ describe("My callender", () => {
 
         let c = fac.createCalenderFactory('pre', 24, "title", "description")
 
-        c.addTask(new Task("some task", "some description"))
-        c.addTask(new Task("some task", "some description"))
-        c.addTask(new Task("some task", "some description"))
+        c.addTask(new Task("some task", "some description", 4))
+        c.addTask(new Task("some task", "some description", 3))
+        c.addTask(new Task("some task", "some description", 8))
 
 
 

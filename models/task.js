@@ -1,6 +1,6 @@
 
 
-const  task = (() => {
+const  Task = (() => {
     let lastID = 1
     return class Task {
 
@@ -9,12 +9,16 @@ const  task = (() => {
         #description
         #days
 
-        constructor(title, description) {
+        constructor(title, description, day) {
             this.#id = lastID
             lastID++
             this.#title = title
             this.#description = description
             this.#days = []
+            if (day !== undefined) {
+                this.addDay(day)
+            } 
+            
         }
 
         getId() {
@@ -42,12 +46,29 @@ const  task = (() => {
         }
 
         addDay(d) {
-            if(typeof(d) !== 'number') throw new Error("Input day is not a number")
-            if (d < 0) throw new Error("Day has to be greater than 0")
+            if (Array.isArray(d)) {
+                if (d.length === 0) throw new Error("List is empty")
+                let type = typeof(d[0])
+                if (type !== 'number') throw new Error("Type is not a number")
+                if(!d.every(e => typeof(e) === type)) throw new Error("List has to consist of numbers")
+                d.forEach(value => {
+                    if (this.#findDaySearch(value) === -1 ) {
+                        this.#days.push(Math.floor(value))
+                    }
+                })
+
+            }
+            else if (typeof(d) === 'number') {
+                if (d < 0) throw new Error("Day has to be greater than 0")
+                            
             if (this.#findDaySearch(d) === -1 ) {
                 this.#days.push(Math.floor(d))
             }
-            
+
+            }
+            else {
+                throw new Error("Input day is not a number or an Array of numbers")
+            }
         }
 
         #findDaySearch(x) {
@@ -72,4 +93,4 @@ const  task = (() => {
 
 
 
-export default task
+export default Task

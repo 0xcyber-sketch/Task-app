@@ -1,15 +1,14 @@
-import Factory from "../models/factory.js";
+import Task from "../models/task.js";
 import { assert } from "chai";
 
 describe("My task", () => {
 
-    let fac = new Factory()
-    let t1 = fac.createTaskFactory("Task", "Description")
+    let t1 = new Task("Task", "Description", 4)
 
 
     it("1) Creating a task", () => {
         let t2 = null
-        t2 = fac.createTaskFactory("Task", "Description")
+        t2 = new Task("Task", "Description", 4)
 
         assert.isNotNull(t2, "Object weren't created")
 
@@ -18,8 +17,8 @@ describe("My task", () => {
   
     it('2) Task dynamiccally increments ID', () => {
         // Test 
-        let t2 = fac.createTaskFactory()
-        let t3 = fac.createTaskFactory()
+        let t2 = new Task("Task", "Description", 4)
+        let t3 = new Task("Task", "Description", 4)
 
         let s1 = t1.getId()
         let s2 = t3.getId()
@@ -54,11 +53,17 @@ describe("My task", () => {
 
     }) 
 
-    it('5) Add day', () => {
+    it('5) Add day/days', () => {
         
-        let t1 = fac.createTaskFactory("some task", "some description")
+        let t1 = new Task("Task", "Description")
 
         assert.strictEqual(t1.getDays().length, 0, "Task's days list aren't created empty")
+
+        let t2 = new Task("Task", "Description", 7)
+
+        
+        assert.strictEqual(t2.getDays().length, 1, "Task's days list are created empty")
+
 
         t1.addDay(7)
         
@@ -78,6 +83,19 @@ describe("My task", () => {
         t1.addDay(2)
 
         assert.strictEqual(t1.getDays().length, 3, "Task's days list is updated with an existing day")
+
+        
+        let t3 = new Task("Task", "Description", [2,1])
+
+        assert.strictEqual(t3.getDays().length, 2, "Task's days list aren't updated correctly")
+        
+       
+
+        assert.throws(() => t3.addDay([])  , Error, "List is empty")
+        assert.throws(() => t3.addDay(['test', 5])  , Error, "Type is not a number")
+        assert.throws(() => t3.addDay([5, 'test, true', true])  , Error, "List has to consist of numbers")
+
+
 
     })
 

@@ -1,5 +1,4 @@
 import Calender from "./calender.js";
-import Task from "./task.js"
 
 class Factory {
     createCalenderFactory(type, days, title, description) {
@@ -9,11 +8,6 @@ class Factory {
            
             
     }
-
-    createTaskFactory(title, description) {
-        return new Task(title, description)
-    }
-
 }
 
 export default Factory

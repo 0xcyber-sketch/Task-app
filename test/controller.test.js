@@ -23,7 +23,7 @@ describe("My controller", () => {
     it ('2) Update task properly', () => {
         
         let c1 = controller.createCalender('pre', 13, "title", "description")
-        controller.addTaskToCalender(c1, "old", "old")
+        controller.addTaskToCalender(c1, "old", "old" , 5)
 
         
 
@@ -34,13 +34,13 @@ describe("My controller", () => {
         assert.notStrictEqual(t1.getTitle(), "old", "Title aren't updated")
         assert.notStrictEqual(t1.getDescription(), "old", "Description aren't updated")
 
-        controller.addTaskToCalender(c1, "old", "old")
+        controller.addTaskToCalender(c1, "old", "old", 7)
         let t2 = c1.findTask(10)
         controller.updateTask(t2, "new", "")
 
         assert.notStrictEqual(t2.getTitle(), "old", "Title aren't updated")
 
-        controller.addTaskToCalender(c1, "old", "old")
+        controller.addTaskToCalender(c1, "old", "old", 8)
         let t3 = c1.findTask(11)
         controller.updateTask(t3, "", "new")
 
@@ -56,9 +56,9 @@ describe("My controller", () => {
         let c1 = controller.createCalender('pre', 13, "title", "description")
 
 
-        controller.addTaskToCalender(c1,"some task", "some description")
-        controller.addTaskToCalender(c1,"some task", "some description")
-        controller.addTaskToCalender(c1,"some task", "some description")
+        controller.addTaskToCalender(c1,"some task", "some description",4)
+        controller.addTaskToCalender(c1,"some task", "some description", 4)
+        controller.addTaskToCalender(c1,"some task", "some description", 7)
 
         
         
