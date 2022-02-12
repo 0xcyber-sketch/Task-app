@@ -23,7 +23,6 @@ router.post('/signIn',async (req,res) => {
              obj = JSON.parse(controller.splitString(await controller.findUser(data.uname), "'")[1])
              await controller.initCalendars(data.uname)
         } catch (e) {
-            console.log(e);
              obj = {name: data.uname, login:true, calendar: []}
              
         }

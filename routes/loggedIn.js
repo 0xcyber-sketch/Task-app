@@ -65,7 +65,6 @@ router.post('/create/c', async (req, res) => {
         }
         else throw Error("This is not a real post")
     } catch (error) {
-        console.log(error)
         res.redirect('/error')
     }
 
