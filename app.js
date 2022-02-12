@@ -4,7 +4,6 @@ import indexRoute from './routes/index.js'
 import loggedInRoute from './routes/loggedIn.js'
 
 import errorRoute from './routes/error.js'
-import calenderRoute from './routes/calender.js'
 import session from "express-session";
 import Controller from "./controller/controller.js";
 
@@ -12,6 +11,8 @@ import Controller from "./controller/controller.js";
 
 
 const app = express()
+
+
 
 export const controller = new Controller()
 
@@ -41,12 +42,5 @@ app.use('/u', routeLoggedIn)
 const routeError = errorRoute
 app.use('/error', routeError)
 
-
-/*const routeHome = homeRoute
-app.use('/', routeHome)
-
-const routeCalender = calenderRoute
-app.use('/calender', routeCalender)
-*/
 
 app.listen(8080, () => console.log("listening on port 8080"))

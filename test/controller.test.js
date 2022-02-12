@@ -105,6 +105,13 @@ describe("My controller", () => {
         con.deleteCalender(c2)
         subject = con.getCalenders().length
         assert.strictEqual(subject, 2, "Element is not deleted to the calender object")
+    })
+
+    it('6) init controller ', () => {
+
+        let con = new Controller()
+
+        
 
 
        

@@ -19,12 +19,13 @@ router.get('/home', (req, res) => {
 
 router.get('/create', (req, res) => {
     if (req.session.login) {
+        console.log(req.session);
         res.render('create.ejs')
     }
 
 })
 
-router.post('/create/c', (req, res) => {
+router.post('/create/c', async (req, res) => {
     const response = req.body
 
     try {
@@ -33,13 +34,12 @@ router.post('/create/c', (req, res) => {
             let c = controller.createCalender(response.value, amount, response.cusTitle, response.cusDescription)
 
             let user = JSON.parse(req.session.user)
-            let obj = {id: c.getId(), checkedDays: []}
+            let obj = {id: c.getId(), checkedDays: [], title: response.cusTitle, description: response.cusDescription, type: response.value, days: amount}
             user.calendar.push(obj)
 
 
             req.session.user = JSON.stringify(user)
-            console.log(user);
-            console.log(req.session.user);
+
 
             res.redirect('/u/calender/' + c.getId())
         }
@@ -51,11 +51,13 @@ router.post('/create/c', (req, res) => {
 
 
             let user = JSON.parse(req.session.user)
-            let obj = {id: c.getId(), checkedDays: []}
+            let obj = {id: c.getId(), checkedDays: [], title: title, description: description, type: response.value, days: amount}
             user.calendar.push(obj)
 
 
             req.session.user = JSON.stringify(user)
+            
+            await controller.saveData(user.name, req.session.user)
 
 
             res.redirect('/u/calender/' + c.getId())
@@ -158,7 +160,7 @@ function helper(req, res, next) {
     next()
 }
 
-router.post('/day/checked/', (req, res) => {
+router.post('/day/checked/', async (req, res) => {
     if (req.session.login) {
         let user = JSON.parse(req.session.user)
         let cID = req.body.calendarId
@@ -168,6 +170,7 @@ router.post('/day/checked/', (req, res) => {
         let cIndex = findeIndexForCalenderID(user.calendar, cID)
         user.calendar[cIndex].checkedDays[data - 1] = true
         req.session.user = JSON.stringify(user)
+        await controller.saveData(user.name, req.session.user)
         res.sendStatus(201)
 
     }
@@ -188,6 +191,5 @@ router.post('/task/add/', (req, res) => {
         res.sendStatus(201)
     }
 })
-
 
 export default router
