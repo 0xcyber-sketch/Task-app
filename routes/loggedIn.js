@@ -9,8 +9,10 @@ const router = express.Router()
 // https://expressjs.com/en/guide/using-middleware.html#middleware.router
 
 router.get('/home', (req, res) => {
-    if (req.session.login) {
-        let user = JSON.parse(req.session.user)
+    let user = JSON.parse(req.session.user)
+
+    if (user.login) {
+        
         let uname = user.name
         res.render('loggedIn.ejs', { uname: uname })
     }
@@ -18,7 +20,8 @@ router.get('/home', (req, res) => {
 })
 
 router.get('/create', (req, res) => {
-    if (req.session.login) {
+    let user = JSON.parse(req.session.user)
+    if (user.login) {
         console.log(req.session);
         res.render('create.ejs')
     }
@@ -98,8 +101,7 @@ router.get('/calender/:id/', helper, (req, res) => {
        
 
     try {
-        if (req.session.login && cID !== -1) {
-            console.log();
+        if (user.login && cID !== -1) {
     
             let value = req.days
             let title = req.title
@@ -160,8 +162,9 @@ function helper(req, res, next) {
 }
 
 router.post('/day/checked/', async (req, res) => {
-    if (req.session.login) {
-        let user = JSON.parse(req.session.user)
+    let user = JSON.parse(req.session.user)
+    if (user.login) {
+        
         let cID = req.body.calendarId
 
         let data = req.body.data
@@ -176,9 +179,10 @@ router.post('/day/checked/', async (req, res) => {
 })
 
 router.post('/task/add/', (req, res) => {
-    if (req.session.login) {
+    let user = JSON.parse(req.session.user)
+    if (user.login) {
         let id = parseInt(req.body.calendarID)
-        let user = JSON.parse(req.session.user)
+        
         let c = controller.getcalenderFromID(id)
 
         controller.addTaskToCalender(c, req.body.title, req.body.description)

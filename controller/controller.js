@@ -2,9 +2,11 @@ import Factory from "../models/factory.js"
 import Task from "../models/task.js"
 import fs from "fs/promises"
 import { existsSync } from 'fs'
+import Service from "../service/service.js"
 
 
 class Controller {
+    #service = new Service()
     #fac = new Factory()
     #calenders
     #dir = "./.session/"
@@ -83,7 +85,7 @@ class Controller {
     }
 
     // Validating 
-
+    /*
     async init() {
 
         if (!(existsSync(this.#dir))) {
@@ -91,49 +93,15 @@ class Controller {
             await fs.writeFile(this.#path, "")
         }
     }
-
-    async findUser(input) {
-
-        let data = await fs.readFile(this.#path, 'utf-8')
-
-
-        let regex = new RegExp(`.*(?=${input}).*`, "g")
-
-        let result = data.match(regex)
-        if (result === null) {
-            throw new Error("username is not saved")
-        }
-        return result[0]
+*/
+    async findUser(inputUserName) {
+        return this.#service.findUser(inputUserName, this.#dir)
+ 
     }
 
-    async saveData(input, newData) {
-        let data = await fs.readFile(this.#path, 'utf-8')
-        let find
-        let inData
+    async saveData(inputUserName, newData) {
 
-        try {
-            find = await this.findUser(input)
-            if (find) {
-                inData = true
-            }
-        } catch (error) {
-            inData = false
-        }
-
-        if (inData) {
-            if (newData !== find) {
-                let regex = new RegExp(`................(?=${input}).*`, "gs")
-                let tempData
-                tempData = data.replace(regex, "user: '" + newData + "'")
-                await fs.writeFile(this.#path, tempData)
-
-            }
-
-        } else {
-            data += "\r\nuser: '" + newData + "'"
-            await fs.writeFile(this.#path, data)
-        }
-
+        await this.#service.saveData(inputUserName, this.#dir, newData)
 
     }
 
@@ -142,17 +110,23 @@ class Controller {
     }
 
 
-    async initCalendars(input) {
-        if (existsSync(this.#path)) {
-            let dataString = await this.findUser(input)
+   async initCalendars(inputUserName,) {
+        let dataObject = await this.#service.initCalendars(inputUserName, this.#dir)
+        console.log(dataObject);
 
-            let dataObject = JSON.parse(this.splitString(dataString, "'")[1])
-
-           for (let i = 0; i < dataObject.calendar.length; i++) {
-                this.createCalender(dataObject.calendar[i].type, dataObject.calendar[i].days, dataObject.calendar[i].title, dataObject.calendar[i].description)
-            }            
+        for (let i = 0; i < dataObject.calendar.length; i++) {
+            this.createCalender(dataObject.calendar[i].type, dataObject.calendar[i].days, dataObject.calendar[i].title, dataObject.calendar[i].description)
         }
 
+
+    }
+
+    fileExsits(inputUserName) {
+        return this.#service.fileExists(this.#service.makePath(inputUserName, this.#dir))
+    }
+
+    createFile(inputUserName, data) {
+         this.#service.createFile(inputUserName, this.#dir, data)
     }
 
 
