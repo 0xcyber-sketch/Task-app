@@ -22,6 +22,15 @@ function setHeader(req, res, next) {
     next()
 }
 
+// set session
+async function setSession (req, res, next) {
+    let data = await controller.init()
+    if (data !== "") {
+        req.session.user = JSON.stringify(JSON.parse(await controller.findUser(data)))
+    }
+    next()
+}
+
 app.use(express.static("public"))
 app.use(express.urlencoded())
 app.use(express.json())
@@ -32,6 +41,7 @@ app.use(session({
     cookie: { path: '/', httpOnly: false, secure: false, maxAge: null, sameSite: "lax"}
 }))
 app.use(setHeader)
+app.use(setSession)
 
 // routes
 
@@ -41,6 +51,7 @@ const routeLoggedIn = loggedInRoute
 app.use('/u', routeLoggedIn)
 const routeError = errorRoute
 app.use('/error', routeError)
+
 
 
 app.listen(8080, () => console.log("listening on port 8080"))

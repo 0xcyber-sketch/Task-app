@@ -112,7 +112,6 @@ class Controller {
 
    async initCalendars(inputUserName,) {
         let dataObject = await this.#service.initCalendars(inputUserName, this.#dir)
-        console.log(dataObject);
 
         for (let i = 0; i < dataObject.calendar.length; i++) {
             this.createCalender(dataObject.calendar[i].type, dataObject.calendar[i].days, dataObject.calendar[i].title, dataObject.calendar[i].description)
@@ -127,6 +126,15 @@ class Controller {
 
     createFile(inputUserName, data) {
          this.#service.createFile(inputUserName, this.#dir, data)
+    }
+
+    async init() {
+        let data = await this.#service.init(this.#dir)
+        if (data !== "") {
+            this.initCalendars(data)
+            return data
+        }
+        return ""
     }
 
 

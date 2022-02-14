@@ -2,6 +2,31 @@ import fs from "fs/promises"
 import { existsSync } from 'fs'
 class Service {
 
+
+    // To know if auser is not logged out when server is closes
+    async init(dir) {
+        const files = await fs.readdir(dir)
+        let fileName = ""
+        for (const f of files) {
+            let temp = await fs.readFile(dir + f, 'utf8')
+            temp = JSON.parse(temp)
+            if (temp.login)  {
+                fileName = f
+                return this.removeDotTxt(fileName)
+            }
+
+        }
+
+        return fileName
+    }
+
+    // Cleans up the file
+    removeDotTxt(str) {
+        let regex = /.*(?=.txt)/g
+        return str.match(regex)[0]
+        
+    }
+
     makePath(inputUserName, dir) {
         return dir + inputUserName + ".txt"
     }
@@ -27,9 +52,6 @@ class Service {
 
     async saveData(inputUserName, dir,  newData) {
         let path = this.makePath(inputUserName, dir)
-        console.log("HEHE : " + newData);
-
-        let data = await fs.readFile(path, 'utf-8')
         let find
         let inData
 
