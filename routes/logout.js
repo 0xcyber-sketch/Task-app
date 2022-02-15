@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
             user.login = false
             controller.saveData(user.name, JSON.stringify(user))
 
-            res.send("Logged out")
+            res.send({status: "logged out"})
             
         }
     })
