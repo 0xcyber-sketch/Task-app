@@ -85,15 +85,7 @@ class Controller {
     }
 
     // Validating 
-    /*
-    async init() {
-
-        if (!(existsSync(this.#dir))) {
-            await fs.mkdir(this.#dir)
-            await fs.writeFile(this.#path, "")
-        }
-    }
-*/
+    
     async findUser(inputUserName) {
         return this.#service.findUser(inputUserName, this.#dir)
  

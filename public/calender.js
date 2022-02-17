@@ -31,6 +31,7 @@ function addTaskHandler() {
     data.title = document.querySelectorAll('input')[0].value
     data.description = document.getElementById("taskDes").value
     data.calendarID = getCIDFromURL()
+    data.day = parseInt(document.querySelectorAll('input')[1].value)
 
 
     console.log(data);

@@ -14,22 +14,27 @@ import Controller from "./controller/controller.js";
 const app = express()
 
 
+let startup = false
 
 export const controller = new Controller()
+
 
 function setHeader(req, res, next) {
     res.header('Access-Control-Allow-Origin', 'localhost');
     res.header('Set-Cookie: CookieName=CookieValue; SameSite=Strict;')
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    //res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     next()
 }
 
 // set session
 async function setSession (req, res, next) {
+    if (startup === false) {
     let data = await controller.init()
     if (data !== "") {
         req.session.user = JSON.stringify(JSON.parse(await controller.findUser(data)))
     }
+    startup = true;
+}
     next()
 }
 

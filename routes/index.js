@@ -3,6 +3,7 @@ import { controller } from '../app.js'
 const router = express.Router()
 
 router.get('/', (req, res) => {
+    console.log(controller.getCalenders());
     let user 
     if (req.session.user !== undefined) {
          user = JSON.parse(req.session.user)
@@ -26,11 +27,16 @@ router.post('/signIn', async (req, res) => {
         obj = JSON.parse(await controller.findUser(data.uname))
         obj.login = true
         await controller.initCalendars(data.uname)
+        await controller.saveData(data.uname, JSON.stringify(obj))
+    }
+    else {
+        obj = {name: data.uname, login:true, calendar:[], tasks: []}
+        controller.createFile(data.uname, JSON.stringify(obj))
     }
 
     req.session.user = JSON.stringify(obj)
 
-    await controller.saveData(data.uname, req.session.user)
+    
 
     res.sendStatus(201)
 })

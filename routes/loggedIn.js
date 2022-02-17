@@ -4,6 +4,8 @@ import { controller } from '../app.js'
 
 const router = express.Router()
 
+let taskID = 0;
+
 
 // Midlleware
 // https://expressjs.com/en/guide/using-middleware.html#middleware.router
@@ -25,11 +27,14 @@ router.get('/create', (req, res) => {
         console.log(req.session);
         res.render('create.ejs')
     }
+    controller.getCalenders().forEach(e => console.log(e.getId()))
 
 })
 
 router.post('/create/c', async (req, res) => {
     const response = req.body
+    console.log("I'm here");
+    console.log(response.value);
 
     try {
         if (response.value === "custom") {
@@ -63,11 +68,14 @@ router.post('/create/c', async (req, res) => {
             await controller.saveData(user.name, req.session.user)
 
 
+            console.log(controller.getCalenders().length);
+            //console.log("Test value: " + test);
             res.redirect('/u/calender/' + c.getId())
 
         }
         else throw Error("This is not a real post")
     } catch (error) {
+        console.log(error);
         res.redirect('/error')
     }
 
@@ -124,7 +132,7 @@ router.get('/calender/:id/', helper, (req, res) => {
                 checked = user.calendar[cIndex].checkedDays
     
             }
-            res.render('calender.ejs', {days: value, missing: (value%7), title: title, description: description, checked: checked})}
+            res.render('calender.ejs', {days: value, missing: (value%7), title: title, description: description, checked: checked, tasks: user.tasks})}
             else {
                 throw new Error("Calendar with this idea doesnt exist")
             }
@@ -172,25 +180,33 @@ router.post('/day/checked/', async (req, res) => {
         let cIndex = findeIndexForCalenderID(user.calendar, cID)
         user.calendar[cIndex].checkedDays[data - 1] = true
         req.session.user = JSON.stringify(user)
-        await controller.saveData(user.name, req.session.user)
+        
         res.sendStatus(201)
 
     }
 })
 
-router.post('/task/add/', (req, res) => {
+router.post('/task/add/', async (req, res) => {
     let user = JSON.parse(req.session.user)
     if (user.login) {
-        let id = parseInt(req.body.calendarID)
+        let cid = parseInt(req.body.calendarID)
         
-        let c = controller.getcalenderFromID(id)
+        let c = controller.getcalenderFromID(cid)
 
-        controller.addTaskToCalender(c, req.body.title, req.body.description)
-        let t = c.findTask(1) // Needs some work
+        controller.addTaskToCalender(c, req.body.title, req.body.description, req.body.day)
+        taskID++
+        let t = c.findTask(taskID) // Needs some work
         
-        console.log("Aye");
-        let data = req.body
-        console.log(data);
+        user.tasks.push({id: t.getId(), title: t.getTitle(), description: t.getDescription(), days: t.getDays()})
+        req.session.user = JSON.stringify(user)
+
+        await controller.saveData(user.name, req.session.user)
+
+        for (let i = 0; i < user.tasks.length; i++) {
+            console.log(user.tasks[i]);
+        }
+
+
         res.sendStatus(201)
     }
 })
