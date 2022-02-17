@@ -103,9 +103,23 @@
 <textarea name="taskDes" id="taskDes" cols="30" rows="10" placeholder="Description" style="resize: none;"></textarea>
 <input type="text" placeholder="day" >
 
+
+<h1> 
+    <%= tasks.length %>
+</h1>
+
 <table>
     <tbody>
-        
+        <% for( let i=0; i < tasks.length; i++) { %>
+            <tr>
+                <td>
+                    <%= tasks[i].title %>
+                </td>
+                <td>
+                    <%= tasks[i].description %>
+                </td>
+            </tr>
+        <% } %>   
     </tbody>
 </table>
 

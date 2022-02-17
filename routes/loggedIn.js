@@ -24,17 +24,14 @@ router.get('/home', (req, res) => {
 router.get('/create', (req, res) => {
     let user = JSON.parse(req.session.user)
     if (user.login) {
-        console.log(req.session);
         res.render('create.ejs')
     }
-    controller.getCalenders().forEach(e => console.log(e.getId()))
 
 })
 
 router.post('/create/c', async (req, res) => {
     const response = req.body
-    console.log("I'm here");
-    console.log(response.value);
+
 
     try {
         if (response.value === "custom") {
@@ -68,8 +65,6 @@ router.post('/create/c', async (req, res) => {
             await controller.saveData(user.name, req.session.user)
 
 
-            console.log(controller.getCalenders().length);
-            //console.log("Test value: " + test);
             res.redirect('/u/calender/' + c.getId())
 
         }

@@ -3,7 +3,6 @@ import { controller } from '../app.js'
 const router = express.Router()
 
 router.get('/', (req, res) => {
-    console.log(controller.getCalenders());
     let user 
     if (req.session.user !== undefined) {
          user = JSON.parse(req.session.user)

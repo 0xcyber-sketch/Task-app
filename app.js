@@ -22,7 +22,6 @@ export const controller = new Controller()
 function setHeader(req, res, next) {
     res.header('Access-Control-Allow-Origin', 'localhost');
     res.header('Set-Cookie: CookieName=CookieValue; SameSite=Strict;')
-    //res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     next()
 }
 

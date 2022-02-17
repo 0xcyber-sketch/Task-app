@@ -26,7 +26,7 @@ function onClickFunction(event) {
 
 }
 
-function addTaskHandler() {
+async function addTaskHandler() {
     let data = {}
     data.title = document.querySelectorAll('input')[0].value
     data.description = document.getElementById("taskDes").value
@@ -34,10 +34,11 @@ function addTaskHandler() {
     data.day = parseInt(document.querySelectorAll('input')[1].value)
 
 
-    console.log(data);
-
-    post(data, '/u/task/add/')
-
+    const res = await post(data, '/u/task/add/')
+    if (res.status === 201) {
+        window.location = window.location.href
+    }
+    
 
 }
 
