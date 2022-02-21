@@ -74,7 +74,7 @@ class Service {
     }
 
 
-    async initCalendars(inputUserName, dir) {
+    async initCalendarsAndTasks(inputUserName, dir) {
         let path = this.makePath(inputUserName, dir)
         if (this.fileExists(path)) {
             let dataString = await this.findUser(inputUserName, dir)
@@ -84,6 +84,10 @@ class Service {
         }
 
     }
+
+   
+
+
 
     async createFile(inputUserName, dir, data) {
         let path = this.makePath(inputUserName, dir)

@@ -7,7 +7,7 @@ describe("My controller", () => {
     let controller = new Controller()
 
     it('1) Create calender', () => {
-        let subject = controller.createCalender('pre', 13)
+        let subject = controller.createCalender('pre', 13, "title", "description")
 
 
         assert.notStrictEqual(subject, undefined, "Calender obj is not created")

@@ -25,6 +25,10 @@ const  Task = (() => {
             return this.#id
         }
 
+        setId(id) {
+            this.#id = id
+        }
+
         getTitle() {
             return this.#title
         }

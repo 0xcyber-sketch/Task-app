@@ -25,7 +25,6 @@ router.post('/signIn', async (req, res) => {
     if (controller.fileExsits(data.uname)) {
         obj = JSON.parse(await controller.findUser(data.uname))
         obj.login = true
-        await controller.initCalendars(data.uname)
         await controller.saveData(data.uname, JSON.stringify(obj))
     }
     else {

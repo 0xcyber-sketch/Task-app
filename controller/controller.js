@@ -1,8 +1,6 @@
 import Factory from "../models/factory.js"
 import Task from "../models/task.js"
-import fs from "fs/promises"
-import { existsSync } from 'fs'
-import Service from "../service/service.js"
+import Service from "../service/persistanceStorage.js"
 
 
 class Controller {
@@ -85,10 +83,10 @@ class Controller {
     }
 
     // Validating 
-    
+
     async findUser(inputUserName) {
         return this.#service.findUser(inputUserName, this.#dir)
- 
+
     }
 
     async saveData(inputUserName, newData) {
@@ -102,8 +100,8 @@ class Controller {
     }
 
 
-   async initCalendars(inputUserName,) {
-        let dataObject = await this.#service.initCalendars(inputUserName, this.#dir)
+    async initCalendars(inputUserName,) {
+        let dataObject = await this.#service.initCalendarsAndTasks(inputUserName, this.#dir)
 
         for (let i = 0; i < dataObject.calendar.length; i++) {
             this.createCalender(dataObject.calendar[i].type, dataObject.calendar[i].days, dataObject.calendar[i].title, dataObject.calendar[i].description)
@@ -112,18 +110,29 @@ class Controller {
 
     }
 
+    async initTasks(inputUserName) {
+        let dataObject = await this.#service.initCalendarsAndTasks(inputUserName, this.#dir)
+        for (let i = 0; i < dataObject.tasks.length; i++) {
+            let tempCalendar = this.getcalenderFromID(dataObject.tasks[i].calendarID)
+            this.addTaskToCalender(tempCalendar, dataObject.tasks[i].title, dataObject.tasks[i].description, dataObject.tasks[i].days )
+        }
+
+  
+    }
+
     fileExsits(inputUserName) {
         return this.#service.fileExists(this.#service.makePath(inputUserName, this.#dir))
     }
 
     createFile(inputUserName, data) {
-         this.#service.createFile(inputUserName, this.#dir, data)
+        this.#service.createFile(inputUserName, this.#dir, data)
     }
 
     async init() {
         let data = await this.#service.init(this.#dir)
         if (data !== "") {
             this.initCalendars(data)
+            this.initTasks(data)
             return data
         }
         return ""

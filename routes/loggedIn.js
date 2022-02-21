@@ -4,7 +4,9 @@ import { controller } from '../app.js'
 
 const router = express.Router()
 
-let taskID = 0;
+let _taskID = 0
+
+
 
 
 // Midlleware
@@ -39,13 +41,13 @@ router.post('/create/c', async (req, res) => {
             let c = controller.createCalender(response.value, amount, response.cusTitle, response.cusDescription)
 
             let user = JSON.parse(req.session.user)
-            let obj = {id: c.getId(), checkedDays: [], title: response.cusTitle, description: response.cusDescription, type: response.value, days: amount}
+            let obj = {id: c.getId(), checkedDays: [], title: response.cusTitle, description: response.cusDescription, type: response.value, days: amount, taskID: -1}
             user.calendar.push(obj)
 
 
             req.session.user = JSON.stringify(user)
 
-
+            await controller.saveData(user.name, req.session.user)
             res.redirect('/u/calender/' + c.getId())
         }
         else if (response.value === "") {
@@ -56,7 +58,7 @@ router.post('/create/c', async (req, res) => {
 
 
             let user = JSON.parse(req.session.user)
-            let obj = {id: c.getId(), checkedDays: [], title: title, description: description, type: response.value, days: amount}
+            let obj = {id: c.getId(), checkedDays: [], title: title, description: description, type: response.value, days: amount, taskID: -1}
             user.calendar.push(obj)
 
 
@@ -93,7 +95,9 @@ function findeIndexForCalenderID (array, x) {
 }
 
 
-router.get('/calender/:id/', helper, (req, res) => {
+router.get('/calender/:id/', helper, async (req, res) => {
+
+
     let user = JSON.parse(req.session.user)
     let cID = -1
 
@@ -101,7 +105,7 @@ router.get('/calender/:id/', helper, (req, res) => {
 
     cID = user.calendar[cIndex].id
 
-       
+    _taskID = user.tasks.length
 
     try {
         if (user.login && cID !== -1) {
@@ -127,7 +131,17 @@ router.get('/calender/:id/', helper, (req, res) => {
                 checked = user.calendar[cIndex].checkedDays
     
             }
-            res.render('calender.ejs', {days: value, missing: (value%7), title: title, description: description, checked: checked, tasks: user.tasks})}
+
+            let tasks = []
+
+            for (let i =0 ; i < user.tasks.length; i++) {
+                if (user.tasks[i].calendarID === cID) {
+                    tasks.push(user.tasks[i])
+                }
+            }
+
+            
+            res.render('calender.ejs', {days: value, missing: (value%7), title: title, description: description, checked: checked, tasks: tasks})}
             else {
                 throw new Error("Calendar with this idea doesnt exist")
             }
@@ -189,17 +203,15 @@ router.post('/task/add/', async (req, res) => {
         let c = controller.getcalenderFromID(cid)
 
         controller.addTaskToCalender(c, req.body.title, req.body.description, req.body.day)
-        taskID++
-        let t = c.findTask(taskID) // Needs some work
+  
+        _taskID++
+        user.calendar[cid - 1].taskID = _taskID
+        let t = c.findTask(_taskID) // Needs some work
         
-        user.tasks.push({id: t.getId(), title: t.getTitle(), description: t.getDescription(), days: t.getDays()})
+        user.tasks.push({title: t.getTitle(), description: t.getDescription(), days: t.getDays(), calendarID: cid})
         req.session.user = JSON.stringify(user)
 
         await controller.saveData(user.name, req.session.user)
-
-        for (let i = 0; i < user.tasks.length; i++) {
-            console.log(user.tasks[i]);
-        }
 
 
         res.sendStatus(201)

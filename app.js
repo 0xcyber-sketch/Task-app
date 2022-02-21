@@ -30,8 +30,10 @@ async function setSession (req, res, next) {
     if (startup === false) {
     let data = await controller.init()
     if (data !== "") {
-        req.session.user = JSON.stringify(JSON.parse(await controller.findUser(data)))
+        let user = JSON.parse(await controller.findUser(data))
+        req.session.user = JSON.stringify(user)
     }
+    
     startup = true;
 }
     next()

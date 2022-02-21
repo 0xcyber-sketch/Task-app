@@ -45,6 +45,7 @@ const  Calender = (() => {
             if (i !== -1) {
                 return this.#tasks[i]
             }else {
+                console.log(taskid);
                 throw new Error("Task is not in the task list")
             }
         }
