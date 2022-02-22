@@ -3,7 +3,6 @@ import { existsSync } from 'fs'
 class Service {
 
 
-    // To know if auser is not logged out when server is closes
     async init(dir) {
         const files = await fs.readdir(dir)
         let fileName = ""
@@ -32,31 +31,31 @@ class Service {
     }
 
 
-        
-    fileExists(path) {
+    // Checks if a file exists    
+    doesFileExists(path) {
         if (existsSync(path)) {
             return true
         }
         return false
     }
 
-    async findUser(inputUserName, dir) {
+    async retrieveUser(inputUserName, dir) {
         let path = this.makePath(inputUserName, dir)
 
-        if (!this.fileExists(path)) {
+        if (!this.doesFileExists(path)) {
             throw new Error("username is not saved")
         }
         let data = await fs.readFile(path, 'utf-8')
     return data
     }
 
-    async saveData(inputUserName, dir,  newData) {
+    async saveDataToUser(inputUserName, dir,  newData) {
         let path = this.makePath(inputUserName, dir)
         let find
         let inData
 
         try {
-            find = await this.findUser(inputUserName, dir)
+            find = await this.retrieveUser(inputUserName, dir)
             if (find) {
                 inData = true
             }
@@ -76,8 +75,8 @@ class Service {
 
     async initCalendarsAndTasks(inputUserName, dir) {
         let path = this.makePath(inputUserName, dir)
-        if (this.fileExists(path)) {
-            let dataString = await this.findUser(inputUserName, dir)
+        if (this.doesFileExists(path)) {
+            let dataString = await this.retrieveUser(inputUserName, dir)
 
             let dataObject = JSON.parse(dataString)
             return dataObject         

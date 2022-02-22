@@ -1,16 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Calender || <%= uname %></title>
+    <title>Smart Calender || <%= uname %>
+    </title>
     <script src="/signout.js" defer></script>
     <script src="/httpclienthandler.js" defer></script>
 </head>
+
 <body>
     <%- include('includes/header.ejs') %>
-    <!---List of calenders--->
-    <a href="/u/create">Create calender</a>
+        <!---List of calenders--->
+        <a href="/u/create">Create calender</a>
+        <div class="calendars">
+            <ul>
+                <% for (let i=0; i < calendars.length; i++) {%>
+                    <li>
+                        <h2>
+
+                            <a href="/u/calender/<%= calendars[i].getId() %>">
+                                <%= calendars[i].getTitle() %>
+                            </a>
+                        </h2>
+                    </li>
+                    <% } %>
+            </ul>
+        </div>
+
 </body>
+
 </html>

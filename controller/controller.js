@@ -47,6 +47,10 @@ class Controller {
         calender.addTask(new Task(title, description, day))
     }
 
+    listTasksFromCalendar(calendar) {
+        console.log(calendar.getTasks());
+    }
+
     getcalenderFromID(id) {
         let i = this.#findcalenderSearch(id)
         if (i !== -1) {
@@ -85,13 +89,13 @@ class Controller {
     // Validating 
 
     async findUser(inputUserName) {
-        return this.#service.findUser(inputUserName, this.#dir)
+        return this.#service.retrieveUser(inputUserName, this.#dir)
 
     }
 
     async saveData(inputUserName, newData) {
 
-        await this.#service.saveData(inputUserName, this.#dir, newData)
+        await this.#service.saveDataToUser(inputUserName, this.#dir, newData)
 
     }
 
@@ -121,7 +125,7 @@ class Controller {
     }
 
     fileExsits(inputUserName) {
-        return this.#service.fileExists(this.#service.makePath(inputUserName, this.#dir))
+        return this.#service.doesFileExists(this.#service.makePath(inputUserName, this.#dir))
     }
 
     createFile(inputUserName, data) {

@@ -18,7 +18,7 @@ router.get('/home', (req, res) => {
     if (user.login) {
         
         let uname = user.name
-        res.render('loggedIn.ejs', { uname: uname })
+        res.render('loggedIn.ejs', { uname: uname, calendars: controller.getCalenders() })
     }
 
 })
@@ -52,8 +52,8 @@ router.post('/create/c', async (req, res) => {
         }
         else if (response.value === "") {
             let amount = parseInt(response.sizes.split(' ')[0])
-            let title = "This is a premade " + amount + " days calender"
-            let description = "This is a basic description for " + amount + " days calender"
+            let title = amount + " days calender"
+            let description = "This is a basic description for a premade calendar with " + amount + " of days"
             let c = controller.createCalender(response.value, amount, title, description)
 
 
@@ -123,7 +123,7 @@ router.get('/calender/:id/', helper, async (req, res) => {
                 }
                 user.calendar[cIndex].checkedDays = checked
 
-                req.session.user = JSON.stringify(user)
+               
             }
     
             else {
@@ -140,7 +140,7 @@ router.get('/calender/:id/', helper, async (req, res) => {
                 }
             }
 
-            
+            req.session.user = JSON.stringify(user)
             res.render('calender.ejs', {days: value, missing: (value%7), title: title, description: description, checked: checked, tasks: tasks})}
             else {
                 throw new Error("Calendar with this idea doesnt exist")
@@ -189,6 +189,8 @@ router.post('/day/checked/', async (req, res) => {
         let cIndex = findeIndexForCalenderID(user.calendar, cID)
         user.calendar[cIndex].checkedDays[data - 1] = true
         req.session.user = JSON.stringify(user)
+        await controller.saveData(user.name, req.session.user)
+
         
         res.sendStatus(201)
 
