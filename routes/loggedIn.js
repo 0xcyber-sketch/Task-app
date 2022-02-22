@@ -208,7 +208,7 @@ router.post('/task/add/', async (req, res) => {
   
         _taskID++
         user.calendar[cid - 1].taskID = _taskID
-        let t = c.findTask(_taskID) // Needs some work
+        let t = c.findTask(_taskID) 
         
         user.tasks.push({title: t.getTitle(), description: t.getDescription(), days: t.getDays(), calendarID: cid})
         req.session.user = JSON.stringify(user)
@@ -218,6 +218,23 @@ router.post('/task/add/', async (req, res) => {
 
         res.sendStatus(201)
     }
+})
+
+router.post('/home/delete/calendar/', async (req, res) => {
+    let user = JSON.parse(req.session.user)
+    let calendars = req.body.Calendars
+
+    for (let i = 0; i < calendars.length; i++) { 
+
+        user.calendar.splice(calendars[i -1], 1); 
+        controller.deleteCalender(controller.getcalenderFromID(calendars[i]))
+    }
+    
+    req.session.user = JSON.stringify(user)
+    await controller.saveData(user.name, req.session.user)
+
+
+    res.sendStatus(201)
 })
 
 export default router

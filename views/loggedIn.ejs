@@ -9,6 +9,7 @@
     </title>
     <script src="/signout.js" defer></script>
     <script src="/httpclienthandler.js" defer></script>
+    <script src="/deleteCalendar.js" defer></script>
 </head>
 
 <body>
@@ -28,6 +29,23 @@
                     </li>
                     <% } %>
             </ul>
+            <button onclick="">Delete Calender</button>
+            <div class="home-modal-class">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <ul>
+                        <% for (let i=0; i < calendars.length; i++) {%>
+                            <li>
+                            <label><%= calendars[i].getTitle() %></label>
+                            <input type="checkbox" value="<%= calendars[i].getId() %>">
+                        </li>
+                            <% } %>
+                        </ul>
+                    <button onclick="deleteCalendar()">Accept</button>
+                    <button>Cancel</button>
+                  </div>
+            </div>
+            
         </div>
 
 </body>
