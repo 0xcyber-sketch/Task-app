@@ -32,7 +32,7 @@ class Service {
 
 
     // Checks if a file exists    
-    doesFileExists(path) {
+    userDataExist(path) {
         if (existsSync(path)) {
             return true
         }
@@ -42,7 +42,7 @@ class Service {
     async retrieveUser(inputUserName, dir) {
         let path = this.makePath(inputUserName, dir)
 
-        if (!this.doesFileExists(path)) {
+        if (!this.userDataExist(path)) {
             throw new Error("username is not saved")
         }
         let data = await fs.readFile(path, 'utf-8')
@@ -75,7 +75,7 @@ class Service {
 
     async initCalendarsAndTasks(inputUserName, dir) {
         let path = this.makePath(inputUserName, dir)
-        if (this.doesFileExists(path)) {
+        if (this.userDataExist(path)) {
             let dataString = await this.retrieveUser(inputUserName, dir)
 
             let dataObject = JSON.parse(dataString)

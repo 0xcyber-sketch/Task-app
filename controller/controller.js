@@ -129,7 +129,7 @@ class Controller {
     }
 
     fileExsits(inputUserName) {
-        return this.#service.doesFileExists(this.#service.makePath(inputUserName, this.#dir))
+        return this.#service.userDataExist(this.#service.makePath(inputUserName, this.#dir))
     }
 
     createFile(inputUserName, data) {
