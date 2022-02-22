@@ -108,7 +108,10 @@ class Controller {
         let dataObject = await this.#service.initCalendarsAndTasks(inputUserName, this.#dir)
 
         for (let i = 0; i < dataObject.calendar.length; i++) {
-            this.createCalender(dataObject.calendar[i].type, dataObject.calendar[i].days, dataObject.calendar[i].title, dataObject.calendar[i].description)
+            let c = this.createCalender(dataObject.calendar[i].type, dataObject.calendar[i].days, dataObject.calendar[i].title, dataObject.calendar[i].description)
+            c.setID(dataObject.calendar[i].id)
+            c.setLastID(dataObject.calendar[i].id + 1)
+            
         }
 
 
@@ -117,6 +120,7 @@ class Controller {
     async initTasks(inputUserName) {
         let dataObject = await this.#service.initCalendarsAndTasks(inputUserName, this.#dir)
         for (let i = 0; i < dataObject.tasks.length; i++) {
+
             let tempCalendar = this.getcalenderFromID(dataObject.tasks[i].calendarID)
             this.addTaskToCalender(tempCalendar, dataObject.tasks[i].title, dataObject.tasks[i].description, dataObject.tasks[i].days )
         }

@@ -13,12 +13,21 @@ let _taskID = 0
 // https://expressjs.com/en/guide/using-middleware.html#middleware.router
 
 router.get('/home', (req, res) => {
-    let user = JSON.parse(req.session.user)
+    let user
+    try {
+         user = JSON.parse(req.session.user)
+    } catch (error) {
+        user = ""
+    }
+    
 
     if (user.login) {
         
         let uname = user.name
         res.render('loggedIn.ejs', { uname: uname, calendars: controller.getCalenders() })
+    }
+    else {
+        res.redirect("/")
     }
 
 })
@@ -223,14 +232,17 @@ router.post('/task/add/', async (req, res) => {
 router.post('/home/delete/calendar/', async (req, res) => {
     let user = JSON.parse(req.session.user)
     let calendars = req.body.Calendars
+   
 
-    for (let i = 0; i < calendars.length; i++) { 
+    console.log(calendars);
 
-        user.calendar.splice(calendars[i -1], 1); 
+    for (let i = 0; i < calendars.length; i++) {
+        user.calendar.splice(calendars[i] -1, i + 1)
         controller.deleteCalender(controller.getcalenderFromID(calendars[i]))
     }
     
     req.session.user = JSON.stringify(user)
+    console.log(req.session.user);
     await controller.saveData(user.name, req.session.user)
 
 

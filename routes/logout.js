@@ -1,5 +1,5 @@
 import express from 'express'
-import { controller } from '../app.js'
+import { controller, setStartUp } from '../app.js'
 const router = express.Router()
 
 router.get("/", async (req, res) => {
@@ -11,6 +11,8 @@ router.get("/", async (req, res) => {
         } else {
             user.login = false
             controller.saveData(user.name, JSON.stringify(user))
+            setStartUp()
+            
 
             res.send({status: "logged out"})
             

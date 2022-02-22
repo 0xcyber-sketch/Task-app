@@ -24,6 +24,15 @@ const  Calender = (() => {
             return this.#id
         }
 
+        setID(value) {
+            this.#id = value
+
+        }
+
+        setLastID(value) {
+            lastID = value
+        }
+
         getTasks() {
             return [...this.#tasks]
         }

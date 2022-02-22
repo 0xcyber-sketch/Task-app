@@ -14,10 +14,13 @@ import Controller from "./controller/controller.js";
 const app = express()
 
 
-let startup = false
+export let startup = false
 
 export const controller = new Controller()
 
+export function setStartUp() {
+    startup = !startup
+}
 
 function setHeader(req, res, next) {
     res.header('Access-Control-Allow-Origin', 'localhost');
