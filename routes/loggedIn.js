@@ -4,16 +4,38 @@ import { controller } from '../app.js'
 
 const router = express.Router()
 
-let _taskID = 0
-let _calendarID = 0
+async function loadTaskFile() {
+    let temp = await controller.openTaskfile()
+    return temp
+}
+
+async function loadCalendarFile() {
+    let temp = await controller.openCalendarfile()
+    return temp
+}
+
+
+let lastCalendarID = 0
+let lastTaskID = 0
+let currentTasks = []
+let currentCalendars = []
+let userCalendarAmount = 0;
 
 
 
 
 // Midlleware
 // https://expressjs.com/en/guide/using-middleware.html#middleware.router
+function getCurrentCalendarsID(user) {
+    let tempList = []
+    for (let i = 0; i < user.calendar.length; i++) {
+        tempList.push(user.calendar[i].id)
+    } 
 
-router.get('/home', (req, res) => {
+    currentCalendars = tempList
+}
+
+router.get('/home', async (req, res) => {
     let user
     try {
         user = JSON.parse(req.session.user)
@@ -25,8 +47,14 @@ router.get('/home', (req, res) => {
     if (user.login) {
 
         let uname = user.name
-        _taskID = user.tasks.length
-        _calendarID = user.calendar.length
+        
+        lastTaskID = await loadTaskFile();
+        userCalendarAmount = user.calendar.length
+        getCurrentCalendarsID(user)
+        lastCalendarID = await loadCalendarFile()
+
+
+
         res.render('loggedIn.ejs', { uname: uname, calendars: controller.getCalenders() })
     }
     else {
@@ -45,6 +73,7 @@ router.get('/create', (req, res) => {
 
 router.post('/create/c', async (req, res) => {
     const response = req.body
+    
 
 
     try {
@@ -53,9 +82,10 @@ router.post('/create/c', async (req, res) => {
             let c = controller.createCalender(response.value, amount, response.cusTitle, response.cusDescription)
 
             let user = JSON.parse(req.session.user)
-            let obj = { id: c.getId(), checkedDays: [], title: response.cusTitle, description: response.cusDescription, type: response.value, days: amount, taskID: -1 }
+            let obj = { id: c.getId(), checkedDays: [], title: response.cusTitle, description: response.cusDescription, type: response.value, days: amount, tasks: [] }
             user.calendar.push(obj)
-
+            lastCalendarID++
+        await controller.saveTotalExistingCalendars(lastCalendarID)
 
             req.session.user = JSON.stringify(user)
 
@@ -70,19 +100,22 @@ router.post('/create/c', async (req, res) => {
 
 
             let user = JSON.parse(req.session.user)
-            let obj = { id: c.getId(), checkedDays: [], title: title, description: description, type: response.value, days: amount, taskID: -1 }
+            let obj = { id: c.getId(), checkedDays: [], title: title, description: description, type: response.value, days: amount, tasks: [] }
             user.calendar.push(obj)
-
+            lastCalendarID++
+            await controller.saveTotalExistingCalendars("" + lastCalendarID)
 
             req.session.user = JSON.stringify(user)
 
             await controller.saveData(user.name, req.session.user)
-
+            
 
             res.redirect('/u/calender/' + c.getId())
 
         }
         else throw Error("This is not a real post")
+
+        
     } catch (error) {
         console.log(error);
         res.redirect('/error')
@@ -107,16 +140,28 @@ function findeIndexForCalenderID(array, x) {
 }
 
 
-router.get('/calender/:id/', helper, async (req, res) => {
 
+function getCurrentTaskIDs(user, index) {
+   let tempList = []
+    for (let i = 0; i < user.calendar[index].tasks.length; i++) {
+        tempList.push(user.calendar[index].tasks[i].taskID)
+    }
+    currentTasks = tempList
+}
+
+
+router.get('/calender/:id/', helper, async (req, res) => {
+    userCalendarAmount++
 
     let user = JSON.parse(req.session.user)
     let cID = -1
 
+
     let cIndex = findeIndexForCalenderID(user.calendar, parseInt(req.params.id))
 
-    cID = user.calendar[cIndex].id
+    getCurrentTaskIDs(user, cIndex)
 
+    cID = user.calendar[cIndex].id
 
 
     try {
@@ -146,10 +191,9 @@ router.get('/calender/:id/', helper, async (req, res) => {
 
             let tasks = []
 
-            for (let i = 0; i < user.tasks.length; i++) {
-                if (user.tasks[i].calendarID === cID) {
-                    tasks.push(user.tasks[i])
-                }
+            for (let i = 0; i < user.calendar[cIndex].tasks.length; i++) {
+                tasks.push(user.calendar[cIndex].tasks[i])
+
             }
 
             req.session.user = JSON.stringify(user)
@@ -159,6 +203,7 @@ router.get('/calender/:id/', helper, async (req, res) => {
             throw new Error("Calendar with this idea doesnt exist")
         }
     } catch (error) {
+        console.log(error);
         res.redirect('/error')
     }
 
@@ -210,8 +255,25 @@ router.post('/day/checked/', async (req, res) => {
     }
 })
 
+function findCalendarIndex(user,calendarID) {
+    let index = -1
+        let i = 0
+        while (index === -1 && i < userCalendarAmount) {
+            if (user.calendar[i].id == calendarID) {
+                index = i
+            }
+            else {
+                i++
+            }
+        }
+        return index
+
+}
+
+
 router.post('/task/add/', async (req, res) => {
     let user = JSON.parse(req.session.user)
+    
     if (user.login) {
         let cid = parseInt(req.body.calendarID)
 
@@ -219,14 +281,21 @@ router.post('/task/add/', async (req, res) => {
 
         controller.addTaskToCalender(c, req.body.title, req.body.description, req.body.day)
 
-        _taskID++
-        user.calendar[_calendarID].taskID = _taskID
-        let t = c.findTask(_taskID)
 
-        user.tasks.push({ title: t.getTitle(), description: t.getDescription(), days: t.getDays(), calendarID: cid })
+        lastTaskID++
+
+        let t = c.findTask(lastTaskID)
+
+
+        let calendarIndex = findCalendarIndex(user, cid)
+        user.calendar[calendarIndex].tasks.push({ title: t.getTitle(), description: t.getDescription(), days: t.getDays() , taskID: lastTaskID})
         req.session.user = JSON.stringify(user)
 
         await controller.saveData(user.name, req.session.user)
+
+
+        await controller.saveTotalExistingTasks("" + lastTaskID)
+
 
 
         res.sendStatus(201)
@@ -234,12 +303,14 @@ router.post('/task/add/', async (req, res) => {
 })
 
 // Cleanup deleted objects 
-function cleanupDeletedUserObject(user) {
-    //console.log(user) 
+function cleanupDeletedUserCalendars(user) {
     let tempUser = user
+    
+
     for (let i = 0; i < user.calendar.length; i++) {
-        if (user.calendar[i].deletede === "true") {
+        if (user.calendar[i].deleted === "true") {
             tempUser.calendar.splice(i, 1)
+            i--
         }
     }
     return tempUser
@@ -250,29 +321,86 @@ router.post('/home/delete/calendar/', async (req, res) => {
     let user = JSON.parse(req.session.user)
     let calendars = req.body.Calendars
 
-
-    //console.log(calendars);
-
-    for (let i = 0; i < _calendarID; i++) {
+    for (let i = 0; i < currentCalendars.length; i++) {
         for (let j = 0; j < calendars.length; j++) {
             if (user.calendar[i].id === calendars[j]) {
-                user.calendar[i].deletede = "true"
+                user.calendar[i].deleted = "true"
                 controller.deleteCalender(controller.getcalenderFromID(calendars[j]))
             }
         }
-        
-     
-
-        
     }
-    
-    user = cleanupDeletedUserObject(user)
 
-    //console.log(controller.getCalenders());
+    user = cleanupDeletedUserCalendars(user)
+
     req.session.user = JSON.stringify(user)
-    //console.log(req.session.user);
-    _calendarID = user.calendar.length
     await controller.saveData(user.name, req.session.user)
+
+
+    res.sendStatus(201)
+})
+
+
+// Cleanup deleted task 
+function cleanupDeletedTasks(user, index) {
+    let tempUser = user
+    
+
+        for (let i = 0; i < tempUser.calendar[index].tasks.length; i++) {
+            if (tempUser.calendar[index].tasks[i].deleted === "true") {
+                tempUser.calendar[index].tasks.splice(i, 1)
+                i--
+            }
+        }
+        console.log(tempUser);
+        return tempUser
+    
+
+    
+
+}
+
+function findIndexForcalendarID(ID, user) {
+    let i = 0;
+    let index = -1
+    let foundCalendarInUser = false
+
+    while (i < user.calendar.length && ! foundCalendarInUser) {
+        if (user.calendar[i].id === ID) {
+            foundCalendarInUser = true
+            index = i
+        }
+        else {
+            i++
+        }
+    }
+    return index
+}
+
+
+// Delete tasks
+router.post('/home/delete/task/', async (req, res) => {
+    let user = JSON.parse(req.session.user)
+    let tasks = req.body.Tasks
+    let calendarID = req.body.ID
+    let calendar = controller.getcalenderFromID(calendarID)
+    let speceficUserCalendarIndex = findIndexForcalendarID(calendarID, user)
+
+    for (let i = 0; i < currentTasks.length; i++) {
+        for (let j = 0; j < tasks.length; j++) {
+            if (user.calendar[speceficUserCalendarIndex].tasks[i].taskID === tasks[j]) {
+                console.log("HEy");
+                user.calendar[speceficUserCalendarIndex].tasks[i].deleted = "true"
+                console.log(user.calendar[speceficUserCalendarIndex].tasks[i].deleted);
+                let tempTask = calendar.findTask(tasks[j])
+                controller.deleteTaskFromCalender(calendar, tempTask)
+            }
+        }
+    }
+
+    user = cleanupDeletedTasks(user, speceficUserCalendarIndex)
+    req.session.user = JSON.stringify(user)
+    await controller.saveData(user.name, req.session.user)
+
 
 
     res.sendStatus(201)

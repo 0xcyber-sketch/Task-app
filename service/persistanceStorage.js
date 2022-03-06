@@ -4,6 +4,9 @@ class Service {
 
 
     async init(dir) {
+        if(!this.direcotoryExsists(dir)) {
+            await fs.mkdir(dir)
+        }
         const files = await fs.readdir(dir)
         let fileName = ""
         for (const f of files) {
@@ -17,6 +20,10 @@ class Service {
         }
 
         return fileName
+    }
+    direcotoryExsists(dir) {
+        if (existsSync(dir)) {return true}
+        return false
     }
 
     // Cleans up the file
@@ -60,7 +67,7 @@ class Service {
                 inData = true
             }
         } catch (error) {
-            console.log(error);
+            
             inData = false
         }
 
@@ -93,6 +100,23 @@ class Service {
         await fs.writeFile(path, data)
 
     }
+
+    async openDataFile(path) {
+        let temp
+        try {
+            if (this.userDataExist) {
+                 temp = await fs.readFile(path, 'utf8')
+                 return temp
+            }
+        } catch (error) {
+            console.log(error);
+            return "0"
+        }
+        }
+        
+       
+
+
 
 }
 

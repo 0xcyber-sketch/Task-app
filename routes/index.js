@@ -28,7 +28,7 @@ router.post('/signIn', async (req, res) => {
         await controller.saveData(data.uname, JSON.stringify(obj))
     }
     else {
-        obj = {name: data.uname, login:true, calendar:[], tasks: []}
+        obj = {name: data.uname, login:true, calendar:[]}
         controller.createFile(data.uname, JSON.stringify(obj))
     }
 

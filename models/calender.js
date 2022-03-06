@@ -18,6 +18,9 @@ const  Calender = (() => {
             this.#days = days
             this.#description = descripion || ""
             this.#title = title
+            if (lastID === Number.MAX_SAFE_INTEGER) {
+                lastID = 0
+            }
         }
 
         getId() {
@@ -54,7 +57,7 @@ const  Calender = (() => {
             if (i !== -1) {
                 return this.#tasks[i]
             }else {
-                console.log(taskid);
+                console.log("Calendar: " + taskid);
                 throw new Error("Task is not in the task list")
             }
         }
@@ -88,7 +91,6 @@ const  Calender = (() => {
         getDays() {return this.#days}
 
         setDays(days) {
-            //console.log(typeof days);
             if (typeof days !== 'number') throw new Error("Days has to be a number!")
             this.#days = Math.floor(days)
         }

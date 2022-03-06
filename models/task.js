@@ -18,6 +18,9 @@ const  Task = (() => {
             if (day !== undefined) {
                 this.addDay(day)
             } 
+            if (lastID === Number.MAX_SAFE_INTEGER) {
+                lastID = 0
+            }
             
         }
 

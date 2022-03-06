@@ -11,6 +11,7 @@
     <script src="/getCIDFromURL.js" defer></script>
     <script src="/signout.js" defer></script>
     <script src="/httpclienthandler.js" defer></script>
+    <script src="/deleteTask.js" defer></script>
 
 
     
@@ -118,10 +119,16 @@
                 <td>
                     <%= tasks[i].description %>
                 </td>
+                <td>
+                    <input type="checkbox" value="<%= tasks[i].taskID %>">
+                </td>
             </tr>
         <% } %>   
     </tbody>
 </table>
+<button onclick="deleteTask()"> Delete task</button>
+
+
 
     
         

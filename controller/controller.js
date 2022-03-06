@@ -48,7 +48,8 @@ class Controller {
     }
 
     listTasksFromCalendar(calendar) {
-        console.log(calendar.getTasks());
+        return calendar.getTasks();
+
     }
 
     getcalenderFromID(id) {
@@ -86,8 +87,6 @@ class Controller {
         }
     }
 
-    // Validating 
-
     async findUser(inputUserName) {
         return this.#service.retrieveUser(inputUserName, this.#dir)
 
@@ -119,10 +118,13 @@ class Controller {
 
     async initTasks(inputUserName) {
         let dataObject = await this.#service.initCalendarsAndTasks(inputUserName, this.#dir)
-        for (let i = 0; i < dataObject.tasks.length; i++) {
+        for (let i = 0; i < dataObject.calendar.length; i++) {
 
-            let tempCalendar = this.getcalenderFromID(dataObject.tasks[i].calendarID)
-            this.addTaskToCalender(tempCalendar, dataObject.tasks[i].title, dataObject.tasks[i].description, dataObject.tasks[i].days )
+            let tempCalendar = this.getcalenderFromID(dataObject.calendar[i].id)
+            for (let j = 0; j < dataObject.calendar[i].tasks.length; j++) {
+                this.addTaskToCalender(tempCalendar, dataObject.calendar[i].tasks[j].title, dataObject.calendar[i].tasks[j].description, dataObject.calendar[i].tasks[j].days )
+            }
+            
         }
 
   
@@ -138,12 +140,38 @@ class Controller {
 
     async init() {
         let data = await this.#service.init(this.#dir)
+
+        if (!this.fileExsits(".task")){
+            this.saveTotalExistingTasks("0");
+        }
+        if (!this.fileExsits(".calendar")){
+            this.saveTotalExistingCalendars("0");
+        }
+        
+
         if (data !== "") {
             this.initCalendars(data)
             this.initTasks(data)
             return data
         }
         return ""
+    }
+
+    async saveTotalExistingTasks(data) {
+        await this.#service.createFile(".task", this.#dir, data)
+    }
+    async saveTotalExistingCalendars(data) {
+        await this.#service.createFile(".calendar", this.#dir, data)
+    }
+
+    async openTaskfile() {
+        let tasks = await this.#service.openDataFile(this.#dir + ".task.txt")
+        return parseInt(tasks);
+    }
+
+    async openCalendarfile() {
+        let tasks = await this.#service.openDataFile(this.#dir + ".calendar.txt")
+        return parseInt(tasks);
     }
 
 
