@@ -85,7 +85,7 @@ router.post('/create/c', async (req, res) => {
             let obj = { id: c.getId(), checkedDays: [], title: response.cusTitle, description: response.cusDescription, type: response.value, days: amount, tasks: [] }
             user.calendar.push(obj)
             lastCalendarID++
-        await controller.saveTotalExistingCalendars(lastCalendarID)
+        await controller.saveTotalExistingCalendars("" + lastCalendarID)
 
             req.session.user = JSON.stringify(user)
 
