@@ -12,6 +12,8 @@
     <script src="/signout.js" defer></script>
     <script src="/httpclienthandler.js" defer></script>
     <script src="/deleteTask.js" defer></script>
+    <script src="/editCalendar.js" defer></script>
+    <script src="/editTask.js" defer></script>
 
 
     
@@ -127,7 +129,20 @@
     </tbody>
 </table>
 <button onclick="deleteTask()"> Delete task</button>
+<br>
+<button onclick="">Edit Calendar</button>
+<input name="edit-calendar-title" id="ect"type="text" placeholder="Title" >
+<textarea name="edit-calendar-description" id="ecd" cols="30" rows="10" placeholder="Description" style="resize: none;"></textarea>
 
+<button onclick="updateCalendar()">Accept</button>
+<button onclick="">Cancel</button>
+<br>
+
+<button onclick="">Edit Task</button>
+<input name="edit-task-title" id="ett"type="text" placeholder="Title" >
+<textarea name="edit-task-description" id="etd" cols="30" rows="10" placeholder="Description" style="resize: none;"></textarea>
+<button onclick="">Accept</button>
+<button onclick="">Cancel</button>
 
 
     

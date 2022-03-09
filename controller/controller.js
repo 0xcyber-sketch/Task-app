@@ -106,6 +106,7 @@ class Controller {
 
     async initCalendars(inputUserName,) {
         let dataObject = await this.#service.initCalendarsAndTasks(inputUserName, this.#dir)
+        console.log(dataObject.calendar.length);
 
         for (let i = 0; i < dataObject.calendar.length; i++) {
             let c = this.createCalender(dataObject.calendar[i].type, dataObject.calendar[i].days, dataObject.calendar[i].title, dataObject.calendar[i].description)
@@ -147,13 +148,14 @@ class Controller {
     async init() {
         let data = await this.#service.init(this.#dir)
 
+       
+        if (!this.fileExsits(".task")){
+            this.saveTotalExistingTasks("0");
+        }
         if (!this.fileExsits(".calendar")){
             this.saveTotalExistingCalendars("0");
         }
 
-        if (!this.fileExsits(".task")){
-            this.saveTotalExistingTasks("0");
-        }
         
         
 

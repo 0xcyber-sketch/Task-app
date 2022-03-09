@@ -11,7 +11,6 @@ async function deleteTask() {
         }
     }
     if (data.Tasks.length > 0) {
-        console.log(data);
         await post(data, '/u/home/delete/task/')
         window.location.href = "http://localhost:8080/u/calender/" +id
     }

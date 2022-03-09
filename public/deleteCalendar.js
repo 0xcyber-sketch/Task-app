@@ -10,7 +10,6 @@ async function deleteCalendar() {
         }
     }
     if (data.Calendars.length > 0) {
-        console.log(data);
         await post(data, '/u/home/delete/calendar/')
         window.location.href = "http://localhost:8080/u/home"
     }
