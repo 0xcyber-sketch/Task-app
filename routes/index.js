@@ -1,5 +1,6 @@
 import express from 'express'
 import { controller } from '../app.js'
+import { createUser } from '../auth/createUser.js'
 const router = express.Router()
 
 router.get('/', (req, res) => {
@@ -37,6 +38,24 @@ router.post('/signIn', async (req, res) => {
     
 
     res.sendStatus(201)
+})
+
+router.post('/signup', (req, res) => {
+    let data = req.body
+    let username = data.username
+    let email = data.mail
+    let conEmail = data.confirmMail
+    let password = data.password
+    
+    try {
+        createUser(username, email, conEmail, password)
+        res.sendStatus(201)
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(400)
+    }
+    
+    
 })
 
 export default router
