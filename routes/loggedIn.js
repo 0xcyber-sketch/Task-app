@@ -63,9 +63,10 @@ router.get('/home', async (req, res) => {
 
 })
 
-router.get('/create', (req, res) => {
+router.get('/create', async (req, res) => {
     let user = JSON.parse(req.session.user)
     if (user.login) {
+        lastCalendarID = await loadCalendarFile()
         res.render('create.ejs')
     }
 
@@ -80,11 +81,13 @@ router.post('/create/c', async (req, res) => {
         if (response.value === "custom") {
             let amount = parseInt(response.days)
             let c = controller.createCalender(response.value, amount, response.cusTitle, response.cusDescription)
+ 
 
             let user = JSON.parse(req.session.user)
             let obj = { id: c.getId(), checkedDays: [], title: response.cusTitle, description: response.cusDescription, type: response.value, days: amount, tasks: [] }
             user.calendar.push(obj)
             lastCalendarID++
+            
         await controller.saveTotalExistingCalendars("" + lastCalendarID)
 
             req.session.user = JSON.stringify(user)
@@ -99,10 +102,12 @@ router.post('/create/c', async (req, res) => {
             let c = controller.createCalender(response.value, amount, title, description)
 
 
+
             let user = JSON.parse(req.session.user)
             let obj = { id: c.getId(), checkedDays: [], title: title, description: description, type: response.value, days: amount, tasks: [] }
             user.calendar.push(obj)
             lastCalendarID++
+            console.log(lastCalendarID);
             await controller.saveTotalExistingCalendars("" + lastCalendarID)
 
             req.session.user = JSON.stringify(user)

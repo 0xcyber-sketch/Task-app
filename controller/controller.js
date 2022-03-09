@@ -102,6 +102,7 @@ class Controller {
         return str.split(delimiter)
     }
 
+ 
 
     async initCalendars(inputUserName,) {
         let dataObject = await this.#service.initCalendarsAndTasks(inputUserName, this.#dir)
@@ -111,6 +112,11 @@ class Controller {
             c.setID(dataObject.calendar[i].id)
             c.setLastID(dataObject.calendar[i].id + 1)
             
+        }
+        if (dataObject.calendar.length === 0) {
+            let temp = this.createCalender(" ", 2, " ", " ")
+            temp.setLastID ( await this.openCalendarfile() + 1)
+            this.deleteCalender(temp)
         }
 
 
@@ -141,12 +147,14 @@ class Controller {
     async init() {
         let data = await this.#service.init(this.#dir)
 
-        if (!this.fileExsits(".task")){
-            this.saveTotalExistingTasks("0");
-        }
         if (!this.fileExsits(".calendar")){
             this.saveTotalExistingCalendars("0");
         }
+
+        if (!this.fileExsits(".task")){
+            this.saveTotalExistingTasks("0");
+        }
+        
         
 
         if (data !== "") {
@@ -170,8 +178,8 @@ class Controller {
     }
 
     async openCalendarfile() {
-        let tasks = await this.#service.openDataFile(this.#dir + ".calendar.txt")
-        return parseInt(tasks);
+        let calendars = await this.#service.openDataFile(this.#dir + ".calendar.txt")
+        return parseInt(calendars);
     }
 
 
