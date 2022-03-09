@@ -437,4 +437,50 @@ router.post('/home/edit/calendar/', async (req, res) => {
 
 })
 
+function findTaskID(user, calendarIndex, taskID) {
+    let i = 0;
+    let index = -1 
+    let found = false
+    while (!found && i  < user.calendar[calendarIndex].tasks.length) {
+        if (user.calendar[calendarIndex].tasks[i].taskID == taskID) {
+            index = i
+            found = true
+        }
+        else {
+            i++
+        }
+    } 
+    return index
+}
+
+router.post('/home/edit/task/', async (req, res) => {
+    let user = JSON.parse(req.session.user)
+
+    let calendarID = parseInt(req.body.ID)
+    let title = req.body.Title
+    let description = req.body.Description
+    let taskID = req.body.TaskID
+
+
+
+    let calendarIndex = findIndexForcalendarID(calendarID,user)
+    let taskIndex = findTaskID(user, calendarIndex, taskID)
+
+    user.calendar[calendarIndex].tasks[taskIndex].title = title
+    user.calendar[calendarIndex].tasks[taskIndex].description = description
+    
+
+    req.session.user = JSON.stringify(user)
+    
+    await controller.saveData(user.name, req.session.user)
+
+
+    res.sendStatus(200)
+
+
+
+
+
+})
+
 export default router
