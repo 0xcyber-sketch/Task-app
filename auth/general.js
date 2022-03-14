@@ -12,11 +12,3 @@ export  function createUUID() {
        return v.toString(16);
     });
  }
-
- export function encrypt(iv, key, input) {
-    let cipher = crypto.createCipheriv('aes-256-ccm', key, iv)
-    let encrypted = cipher.update(input, 'utf8', 'base64');
-    encrypted += cipher.final('base64');
-    
-    return encrypt
-    } 
