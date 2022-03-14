@@ -8,7 +8,6 @@ class Controller {
     #fac = new Factory()
     #calenders
     #dir = "./.session/"
-    #path = this.#dir + "session.txt"
     constructor() {
         this.#calenders = []
     }
@@ -182,6 +181,11 @@ class Controller {
     async openCalendarfile() {
         let calendars = await this.#service.openDataFile(this.#dir + ".calendar.txt")
         return parseInt(calendars);
+    }
+
+    async getSaltAndPassFromUser(inputUserName) {
+        let dataObject = await this.#service.initCalendarsAndTasks(inputUserName, this.#dir)
+        return [dataObject.pass, dataObject.salt]
     }
 
 

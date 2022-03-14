@@ -4,6 +4,7 @@ import indexRoute from './routes/index.js'
 import loggedInRoute from './routes/loggedIn.js'
 import errorRoute from './routes/error.js'
 import logOutRoute from './routes/logout.js'
+import loginRoute from './routes/login.js'
 
 import session from "express-session";
 import Controller from "./controller/controller.js";
@@ -65,6 +66,9 @@ app.use('/error', routeError)
 
 const routeLogOut = logOutRoute
 app.use('/logout', routeLogOut)
+
+const routeLogin = loginRoute
+app.use('/login', routeLogin)
 
 
 
