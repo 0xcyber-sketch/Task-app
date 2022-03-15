@@ -19,7 +19,6 @@ let lastCalendarID = 0
 let lastTaskID = 0
 let currentTasks = []
 let currentCalendars = []
-let userCalendarAmount = 0;
 
 
 
@@ -49,7 +48,6 @@ router.get('/home', async (req, res) => {
         let uname = user.name
         
         lastTaskID = await loadTaskFile();
-        userCalendarAmount = user.calendar.length
         getCurrentCalendarsID(user)
         lastCalendarID = await loadCalendarFile()
 
@@ -156,7 +154,6 @@ function getCurrentTaskIDs(user, index) {
 
 
 router.get('/calender/:id/', helper, async (req, res) => {
-    userCalendarAmount++
 
     let user = JSON.parse(req.session.user)
     let cID = -1
@@ -255,7 +252,7 @@ router.post('/day/checked/', async (req, res) => {
         await controller.saveData(user.name, req.session.user)
 
 
-        res.sendStatus(201)
+        res.send({status : 201})
 
     }
 })
@@ -263,7 +260,7 @@ router.post('/day/checked/', async (req, res) => {
 function findCalendarIndex(user,calendarID) {
     let index = -1
         let i = 0
-        while (index === -1 && i < userCalendarAmount) {
+        while (index === -1 && i < user.calendar.length) {
             if (user.calendar[i].id === calendarID) {
                 index = i
             }
@@ -289,10 +286,11 @@ router.post('/task/add/', async (req, res) => {
 
         lastTaskID++
 
+        try {
         let t = c.findTask(lastTaskID)
-
-
         let calendarIndex = findCalendarIndex(user, cid)
+        console.log(t);
+        console.log(calendarIndex);
         user.calendar[calendarIndex].tasks.push({ title: t.getTitle(), description: t.getDescription(), days: t.getDays() , taskID: lastTaskID})
         req.session.user = JSON.stringify(user)
 
@@ -300,10 +298,15 @@ router.post('/task/add/', async (req, res) => {
 
 
         await controller.saveTotalExistingTasks("" + lastTaskID)
+        } catch(e) {
+
+        }
+
+        
 
 
 
-        res.sendStatus(201)
+        res.send({status : 201})
     }
 })
 
@@ -341,7 +344,7 @@ router.post('/home/delete/calendar/', async (req, res) => {
     await controller.saveData(user.name, req.session.user)
 
 
-    res.sendStatus(201)
+    res.send({status : 201})
 })
 
 
@@ -357,10 +360,6 @@ function cleanupDeletedTasks(user, index) {
             }
         }
         return tempUser
-    
-
-    
-
 }
 
 function findIndexForcalendarID(ID, user) {
@@ -405,7 +404,7 @@ router.post('/home/delete/task/', async (req, res) => {
 
 
 
-    res.sendStatus(201)
+    res.send({status : 201})
 })
 
 router.post('/home/edit/calendar/', async (req, res) => {
@@ -429,7 +428,7 @@ router.post('/home/edit/calendar/', async (req, res) => {
     await controller.saveData(user.name, req.session.user)
 
 
-    res.sendStatus(200)
+    res.send({status : 200})
 
 
 
@@ -475,7 +474,7 @@ router.post('/home/edit/task/', async (req, res) => {
     await controller.saveData(user.name, req.session.user)
 
 
-    res.sendStatus(200)
+    res.send({status : 200})
 
 
 

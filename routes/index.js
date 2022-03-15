@@ -37,7 +37,7 @@ router.post('/signIn', async (req, res) => {
 
     
 
-    res.sendStatus(201)
+    res.send({status : 201})
 })
 
 router.post('/signup', (req, res) => {
@@ -49,10 +49,9 @@ router.post('/signup', (req, res) => {
     
     try {
         createUser(username, email, conEmail, password)
-        res.sendStatus(201)
+        res.send(JSON.stringify({status : 201}))
     } catch (error) {
-        console.log(error);
-        res.sendStatus(400)
+        res.send(JSON.stringify({status : 400, msg : error.toString()}))
     }
     
     

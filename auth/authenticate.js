@@ -5,7 +5,8 @@ import { controller } from '../app.js'
 export async function authenticate(username, password) {
 
     if (!userExsits(username)) {
-        return false
+        throw new Error("User or password is wrong")
+
     }
 
     let data = await controller.getSaltAndPassFromUser(username)
@@ -13,7 +14,7 @@ export async function authenticate(username, password) {
     let pass = (Buffer.from(general.generateHash(password + data[1]), 'utf8').toString('base64')).toString()
 
     if (!(pass === data[0])) {
-        return false
+        throw new Error("User or password is wrong")
     }
     return true
 }

@@ -1,4 +1,7 @@
 async function signInGuest() {
     const data = { uname: "guest", psw: "******", email: "guest@guest.com" }
-    await post(data, '/signIn')
-    window.location = "/u/home"}
+    const res = await post(data, '/signIn')
+    if (res.status === 200) {
+        window.location = "/u/home"}
+    }
+    

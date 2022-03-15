@@ -6,7 +6,6 @@ async function get(url) {
         },
     })
 
-    if (!response.ok) throw new Error(response.status)
 
     return await response.json()
 
@@ -21,21 +20,9 @@ async function post(data, url) {
         body: JSON.stringify(data)
     })
 
-    if (!response.ok) throw new Error(response.status)
+    
 
-    return response
+    return await response.json()
 
 }
 
-async function deleteData(itemID, url) {
-    const response = await fetch(url + itemID, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-
-    if (!response.ok) throw new Error(response.status)
-
-    return response
-}

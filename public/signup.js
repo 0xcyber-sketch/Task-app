@@ -39,6 +39,7 @@ async function signup() {
 
         let data = { username: username, mail: mail, confirmMail: conmail, password: pass }
         let res = await post(data, "/signup")
+        console.log(res.status);
         if (res.status === 201) {
             window.location.href = "http://localhost:8080/login"
         }
